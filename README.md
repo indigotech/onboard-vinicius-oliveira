@@ -2,7 +2,7 @@
 
 ## Project Name 📇 *
 
-Ex adipisicing velit ea voluptate consequat Lorem tempor ex.
+Soon to be disclosed!
 
 ## Environment and tools 🛠️ *
 
