@@ -12,24 +12,24 @@ GraphQL / Node.js / Express
 
 Firstly, clone the repository:
 
-``bash
+```bash
 $ git clone https://github.com/indigotech/onboard-vinicius-oliveira.git
 ```
 
 Secondly, Install the project's dependencies:
 
-``bash
+```bash
 $ npm install
 ```
 
 or
 
-``bash
+```bash
 $ npm i
 ```
 
 Then, just run the program!
 
-``bash
-$ npm run dev
+```bash
+npm run dev
 ```
