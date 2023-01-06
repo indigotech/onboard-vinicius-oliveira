@@ -19,13 +19,7 @@ $ git clone https://github.com/indigotech/onboard-vinicius-oliveira.git
 Secondly, Install the project's dependencies:
 
 ```bash
-$ npm install
-```
-
-or
-
-```bash
-$ npm i
+$ npm install --legacy-peer-deps
 ```
 
 Then, just run the program!
