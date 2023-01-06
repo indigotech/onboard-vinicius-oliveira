@@ -2,12 +2,28 @@
 
 ## Project Name 📇 *
 
-Ex adipisicing velit ea voluptate consequat Lorem tempor ex.
+Soon to be disclosed!
 
 ## Environment and tools 🛠️ *
 
-Soon to be disclosed!
+GraphQL / Node.js / Express
 
 ## Steps to run and debug 🪲 *
 
-Soon to be disclosed!
+Firstly, clone the repository:
+
+```bash
+$ git clone https://github.com/indigotech/onboard-vinicius-oliveira.git
+```
+
+Secondly, Install the project's dependencies:
+
+```bash
+$ npm install --legacy-peer-deps
+```
+
+Then, just run the program!
+
+```bash
+npm run dev
+```
