@@ -25,5 +25,5 @@ $ npm install --legacy-peer-deps
 Then, just run the program!
 
 ```bash
-npm run dev
+npm start
 ```
