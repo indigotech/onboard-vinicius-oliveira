@@ -22,8 +22,14 @@ Secondly, Install the project's dependencies:
 $ npm install --legacy-peer-deps
 ```
 
+Compile the program:
+
+```bash
+$ npm run build
+```
+
 Then, just run the program!
 
 ```bash
-npm run dev
+$ npm start
 ```
