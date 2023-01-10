@@ -11,3 +11,12 @@ export const AppDataSource = new DataSource({
   synchronize: true,
   logging: true,
 });
+
+// Database Connection
+export const setupDBConnection = () => {
+  AppDataSource.initialize()
+    .then(() => {
+      console.log("Hello from Postgres!");
+    })
+    .catch((error) => console.log(error));
+};
