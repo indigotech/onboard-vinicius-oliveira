@@ -19,11 +19,10 @@ Secondly, Install the project's dependencies:
 ```bash
 $ npm install --legacy-peer-deps
 ```
-
-Compile the program:
+Run this Docker command:
 
 ```bash
-$ npm run build
+$ docker-compose up
 ```
 
 Then, just run the program!
