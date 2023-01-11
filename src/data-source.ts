@@ -1,5 +1,4 @@
 import "reflect-metadata";
-import { startApolloServer } from "./server";
 import { DataSource } from "typeorm";
 import { User } from "./User";
 

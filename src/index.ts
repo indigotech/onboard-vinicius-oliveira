@@ -7,6 +7,6 @@ async function startApp() {
 
   console.log("\nSetting Up Apollo Server...");
   await startApolloServer();
-};
+}
 
 startApp();
