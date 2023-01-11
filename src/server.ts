@@ -4,7 +4,6 @@ import { ApolloServer } from "@apollo/server";
 import { typeDefs } from "./schema";
 import { resolvers } from "./resolvers";
 
-// Apollo Server v4 Setup
 export const startApolloServer = async () => {
   const server = new ApolloServer({ typeDefs, resolvers });
 
@@ -14,5 +13,5 @@ export const startApolloServer = async () => {
     listen: { port: PORT },
   });
 
-  console.log(`Server running at: localhost:${PORT}`);
+  console.log(`Server running at: localhost:${url}`);
 };

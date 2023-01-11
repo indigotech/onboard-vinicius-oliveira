@@ -22,7 +22,7 @@ $ npm install --legacy-peer-deps
 Run this Docker command:
 
 ```bash
-$ docker-compose up
+$ docker-compose up -d
 ```
 
 Then, just run the program!
