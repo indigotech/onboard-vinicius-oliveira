@@ -1,0 +1,22 @@
+services:
+  localdb:
+    image: postgres:14.3
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db/dumps:/app-db-dumps
+    environment:
+      - POSTGRES_USER=vbersano
+      - POSTGRES_PASSWORD=pharao123
+      - POSTGRES_DB=vbersano
+
+  testdb:
+    image: postgres:14.3
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./db/dumps:/app-db-dumps
+    environment:
+      - POSTGRES_USER=vbersano
+      - POSTGRES_PASSWORD=pharao123
+      - POSTGRES_DB=vbersano_testdb

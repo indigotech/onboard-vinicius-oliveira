@@ -1,23 +1,12 @@
-import { ApolloServer } from "@apollo/server";
-import { startStandaloneServer } from "@apollo/server/standalone";
-import { buildSchema } from "graphql";
+import { startApolloServer } from "./server";
+import { setupDBConnection } from "./data-source";
 
-const typeDefs = buildSchema(`
-type Query {
-    hello: String!
-}
-`);
+async function startApp() {
+  console.log("\nDatabase Setup Initializing...");
+  await setupDBConnection();
 
-const resolvers = {
-  Query: {
-    hello: () => "Hello World!",
-  },
+  console.log("\nSetting Up Apollo Server...");
+  await startApolloServer();
 };
 
-const server = new ApolloServer({ typeDefs, resolvers });
-
-const { url } = await startStandaloneServer(server, {
-  listen: { port: 3001 },
-});
-
-console.log(`Server running at: ${url}`);
+startApp();

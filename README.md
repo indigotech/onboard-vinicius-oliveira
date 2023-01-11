@@ -1,12 +1,10 @@
 # TAQTILE ONBOARD PROGRAM 🚀
 
-## Project Name 📇 *
-
-Soon to be disclosed!
+## Back-end Internship Onboard Project  📇 *
 
 ## Environment and tools 🛠️ *
 
-GraphQL / Node.js / Express
+GraphQL / Node.js / Express / Apollo Server / Typescript
 
 ## Steps to run and debug 🪲 *
 
@@ -21,11 +19,10 @@ Secondly, Install the project's dependencies:
 ```bash
 $ npm install --legacy-peer-deps
 ```
-
-Compile the program:
+Run this Docker command:
 
 ```bash
-$ npm run build
+$ docker-compose up -d
 ```
 
 Then, just run the program!

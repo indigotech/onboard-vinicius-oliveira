@@ -1,13 +1,16 @@
 {
-    "compilerOptions": {
-      "rootDirs": ["src"],
-      "outDir": "dist",
-      "lib": ["es2020"],
-      "target": "es2020",
-      "module": "esnext",
-      "moduleResolution": "node",
-      "esModuleInterop": true,
-      "types": ["node"]
-    }
-  }
-  
+  "compilerOptions": {
+    "baseUrl": "src",
+    "outDir": "./build",
+    "lib": ["es5", "es6", "es2020"],
+    "target": "es2020",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "types": ["node"]
+  },
+  "exclude": ["node_modules"]
+}
