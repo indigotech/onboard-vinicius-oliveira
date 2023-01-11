@@ -4,4 +4,5 @@ export const typeDefs = buildSchema(`
 type Query {
     hello: String!
 }
+
 `);

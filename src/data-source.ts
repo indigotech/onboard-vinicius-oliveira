@@ -1,5 +1,6 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
+import { User } from "./User";
 
 export const AppDataSource = new DataSource({
   type: "postgres",
@@ -10,6 +11,7 @@ export const AppDataSource = new DataSource({
   database: "vbersano",
   synchronize: true,
   logging: true,
+  entities: [User],
 });
 
 // Database Connection
