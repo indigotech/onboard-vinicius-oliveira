@@ -1,12 +1,12 @@
 # TAQTILE ONBOARD PROGRAM 🚀
 
-## Back-end Internship Onboard Project  📇 *
+## Back-end Internship Onboard Project 📇
 
-## Environment and tools 🛠️ *
+## Environment and tools 🛠️
 
 GraphQL / Node.js / Express / Apollo Server / Typescript
 
-## Steps to run and debug 🪲 *
+## Steps to run and debug 🪲
 
 Firstly, clone the repository:
 
