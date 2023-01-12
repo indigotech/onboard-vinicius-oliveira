@@ -1,6 +1,8 @@
 import { User } from './User';
 import { AppDataSource } from './data-source';
 
+import crypto from 'crypto';
+
 const userRepository = AppDataSource.getRepository(User);
 
 export const resolvers = {
@@ -11,9 +13,11 @@ export const resolvers = {
     async createUser(_, { data }) {
       const user = new User();
 
+      const hashedPassword = crypto.createHash('sha256').update(data.password).digest('base64');
+
       user.name = data.name;
       user.email = data.email;
-      user.password = data.password;
+      user.password = hashedPassword;
       user.birthDate = data.birthDate;
 
       function checkPassword(string) {
