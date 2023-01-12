@@ -20,7 +20,7 @@ export const resolvers = {
       user.password = hashedPassword;
       user.birthDate = data.birthDate;
 
-      function checkPassword(string) {
+      function checkPassword(string: string) {
         if (string.length < 6) {
           throw new Error('Password must contain More than 6 characters');
         }
@@ -30,7 +30,7 @@ export const resolvers = {
         }
       }
 
-      async function checkEmail(inputEmail) {
+      async function checkEmail(inputEmail: string) {
         if (await userRepository.findOneBy({ email: inputEmail })) {
           throw new Error('This e-mail is alredy in use');
         }
