@@ -4,8 +4,6 @@ export const typeDefs = buildSchema(`
 
 type Query {
     hello: String
-    users: [User!]
-    getUserByName(name: String!): User!
 }
 
 type User {
