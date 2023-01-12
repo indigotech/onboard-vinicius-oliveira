@@ -2,15 +2,20 @@ import { buildSchema } from 'graphql';
 
 export const typeDefs = buildSchema(`
 
+type Query {
+    hello: String
+}
+
 type User {
     id: ID!
     name: String!
     email: String!
+    password: String!
     birthDate: String
 }
 
 input UserInput {
-    name: String!, email: String!, birthDate: String
+    name: String!, email: String!, password: String!, birthDate: String
 }
 
 type Mutation {

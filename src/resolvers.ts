@@ -2,7 +2,9 @@ import { User } from './User';
 import { AppDataSource } from './data-source';
 
 export const resolvers = {
-  Query: {},
+  Query: {
+    hello: () => 'Hello World',
+  },
   Mutation: {
     async createUser(_, { data }) {
       const user = new User();
