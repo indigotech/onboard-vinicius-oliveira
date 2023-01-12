@@ -1,38 +1,19 @@
-const users = [
-  {
-    id: 1,
-    name: 'Vinicius',
-    email: 'vinicius.bersano@gmail.com',
-    password: 'password123',
-  },
-  {
-    id: 2,
-    name: 'Shinji',
-    email: 'shinji.ikari@gmail.com',
-    password: 'asuka321',
-  },
-];
+import { User } from './User';
+import { AppDataSource } from './data-source';
 
 export const resolvers = {
-  Query: {
-    hello: () => 'Hello World',
-    users: () => users,
-    getUserByName: (_, args) => {
-      return users.find((user) => user.name === args.name);
-    },
-  },
+  Query: {},
   Mutation: {
-    createUser(_, { data }) {
-      const newUser = {
-        id: Math.floor(Math.random() * 10),
-        name: data.name,
-        email: data.email,
-        password: data.password,
-        birthDate: data.birthDate,
-      };
+    async createUser(_, { data }) {
+      const user = new User();
 
-      users.push(newUser);
-      return newUser;
+      user.name = data.name;
+      user.email = data.email;
+      user.password = data.password;
+      user.birthDate = data.birthDate;
+
+      await AppDataSource.manager.save(user);
+      return user;
     },
   },
 };
