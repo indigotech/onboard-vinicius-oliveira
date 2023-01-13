@@ -1,9 +1,14 @@
+import axios from 'axios';
 import assert from 'assert';
 
-describe('Array', function () {
-  describe('#indexOf()', function () {
-    it('should return -1 when the value is not present', function () {
-      assert.equal([1, 2, 3].indexOf(4), -1);
-    });
+describe('GraphQL Hello Query', () => {
+  it('returns "Hello World"', async () => {
+    const query = `query { hello } `;
+
+    const request = await axios.post('http://localhost:3001/', { query });
+
+    const requestData = request.data;
+
+    assert.equal(requestData.data.hello, 'Hello World');
   });
 });
