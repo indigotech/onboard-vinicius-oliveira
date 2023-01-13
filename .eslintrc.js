@@ -10,6 +10,7 @@ module.exports = {
     "plugin:import/errors",
     "plugin:import/warnings",
     "plugin:import/typescript",
+    "plugin:import/errors",
   ],
   overrides: [],
   parser: "@typescript-eslint/parser",
