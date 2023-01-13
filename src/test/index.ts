@@ -1,5 +1,6 @@
 import axios from 'axios';
-import assert from 'assert';
+import {} from 'mocha';
+import { expect } from 'chai';
 
 describe('GraphQL Hello Query', () => {
   it('returns "Hello World"', async () => {
@@ -7,8 +8,8 @@ describe('GraphQL Hello Query', () => {
 
     const request = await axios.post('http://localhost:3001/', { query });
 
-    const requestData = request.data;
+    const queryResponseField = request.data.data.hello;
 
-    assert.equal(requestData.data.hello, 'Hello World');
+    expect(queryResponseField).to.be.deep.eq('Hello World');
   });
 });
