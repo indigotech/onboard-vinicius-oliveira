@@ -25,8 +25,6 @@ export const resolvers = {
   },
 };
 
-//Input Validation Functions
-
 function checkPassword(string) {
   if (string.length < 6) {
     throw new Error('Password must contain More than 6 characters');
