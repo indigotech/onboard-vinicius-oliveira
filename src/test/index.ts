@@ -8,8 +8,8 @@ describe('GraphQL Hello Query', () => {
 
     const request = await axios.post('http://localhost:3001/', { query });
 
-    const queryResponseField = request.data.data.hello;
+    const queryResponseField = request.data;
 
-    expect(queryResponseField).to.be.deep.eq('Hello World');
+    expect(queryResponseField).to.be.deep.eq({ data: { hello: 'Hello World' } });
   });
 });
