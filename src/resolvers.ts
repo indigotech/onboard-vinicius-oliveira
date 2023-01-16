@@ -1,5 +1,6 @@
 import { User } from './User';
 import { AppDataSource } from './data-source';
+import crypto from 'crypto';
 
 const userRepository = AppDataSource.getRepository(User);
 
@@ -10,14 +11,15 @@ export const resolvers = {
   Mutation: {
     async createUser(_, { data }) {
       const user = new User();
+      const hashedPassword = passwordHashing(data.password);
 
       user.name = data.name;
       user.email = data.email;
-      user.password = data.password;
+      user.password = hashedPassword;
       user.birthDate = data.birthDate;
 
-      checkPassword(data.password);
-      await checkEmail(data.email);
+      checkPassword(user.password);
+      await checkEmail(user.email);
 
       await AppDataSource.manager.save(user);
       return user;
@@ -41,4 +43,8 @@ async function checkEmail(inputEmail) {
   if (await userRepository.findOneBy({ email: inputEmail })) {
     throw new Error('This e-mail is alredy in use');
   }
+}
+
+function passwordHashing(password) {
+  return crypto.createHash('sha256').update(password).digest('base64');
 }
