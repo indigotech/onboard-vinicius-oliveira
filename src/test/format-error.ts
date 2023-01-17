@@ -1,4 +1,5 @@
-import { GraphQLError } from 'graphql';
+import { GraphQLError, GraphQLFormattedError } from 'graphql';
+import { unwrapResolverError } from '@apollo/server/errors';
 
 export class CustomError extends Error {
   code: number;
@@ -7,15 +8,20 @@ export class CustomError extends Error {
   constructor(message: string, code: number) {
     super(message);
     this.code = code;
-    console.log(code);
   }
 }
 
-export function formatError(error: GraphQLError) {
-  console.log(JSON.stringify(error));
+export function formatError(formattedError: GraphQLFormattedError, error: unknown) {
+  if (error instanceof GraphQLError) {
+    error = unwrapResolverError(error);
+  }
 
-  return {
-    message: error.message,
-    code: 401,
-  };
+  if (error instanceof CustomError) {
+    return {
+      message: error.message,
+      code: error.code,
+    };
+  }
+
+  return formattedError;
 }
