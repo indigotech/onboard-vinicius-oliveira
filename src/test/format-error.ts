@@ -5,23 +5,26 @@ export class CustomError extends Error {
   code: number;
   details?: string;
 
-  constructor(message: string, code: number) {
+  constructor(message: string, code: number, details?: string) {
     super(message);
     this.code = code;
+    this.details = details;
   }
 }
 
 export function formatError(formattedError: GraphQLFormattedError, error: unknown) {
+  let originalError = error;
+
   if (error instanceof GraphQLError) {
-    error = unwrapResolverError(error);
+    originalError = unwrapResolverError(error);
   }
 
-  if (error instanceof CustomError) {
+  if (originalError instanceof CustomError) {
     return {
-      message: error.message,
-      code: error.code,
+      message: originalError.message,
+      code: originalError.code,
     };
+  } else {
+    return { message: 'Internal Server Error', code: 500 };
   }
-
-  return formattedError;
 }
