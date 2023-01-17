@@ -1,12 +1,16 @@
 import { User } from './User';
 import { AppDataSource } from './data-source';
 import crypto from 'crypto';
+import { CustomError } from './test/format-error';
 
 const userRepository = AppDataSource.getRepository(User);
 
 export const resolvers = {
   Query: {
-    hello: () => 'Hello World',
+    hello: () => {
+      throw new CustomError('Password must contain at Least 1 Number and 1 Letter', 401);
+      return 'Hello World';
+    },
   },
   Mutation: {
     async createUser(_, { data }) {
@@ -29,19 +33,19 @@ export const resolvers = {
 
 async function checkPassword(string: string) {
   if (string.length < 6) {
-    throw new Error('Password must contain More than 6 characters');
+    throw new CustomError('Password must contain more than 6 characters', 401);
   }
 
   const regex = /([0-9].*[a-z])|([a-z].*[0-9])/;
 
   if (!regex.test(string)) {
-    throw new Error('Password must contain at Least 1 Number and 1 Letter');
+    throw new CustomError('Password must contain at Least 1 Number and 1 Letter', 401);
   }
 }
 
 async function checkEmail(inputEmail) {
   if (await userRepository.findOneBy({ email: inputEmail })) {
-    throw new Error('This e-mail is alredy in use');
+    throw new CustomError('This e-mail is alredy in use', 401);
   }
 }
 
