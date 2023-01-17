@@ -8,7 +8,6 @@ const userRepository = AppDataSource.getRepository(User);
 export const resolvers = {
   Query: {
     hello: () => {
-      throw new CustomError('Password must contain at Least 1 Number and 1 Letter', 401);
       return 'Hello World';
     },
   },
@@ -31,7 +30,7 @@ export const resolvers = {
   },
 };
 
-async function checkPassword(string: string) {
+async function checkPassword(string) {
   if (string.length < 6) {
     throw new CustomError('Password must contain more than 6 characters', 401);
   }
