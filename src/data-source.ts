@@ -18,5 +18,5 @@ export const setupDBConnection = async () => {
 
 export const dropDB = async () => {
   await AppDataSource.dropDatabase();
-  console.log(AppDataSource.getRepository(User));
+  console.info(`Database Dropped!`);
 };
