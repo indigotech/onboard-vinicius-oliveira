@@ -1,18 +1,48 @@
 import axios from 'axios';
 import { expect } from 'chai';
+import { AppDataSource } from '../data-source';
+import { passwordHashing } from '../resolvers';
+import { User } from '../User';
 import { EXPECTED_USER, MUTATION, TEST_URL } from './test-constants';
 
 describe('User Tests', () => {
   describe('createUser mutation', () => {
     it('Should create a new user', async () => {
-      const response = await axios.post(TEST_URL, {
-        query: MUTATION,
-        variables: EXPECTED_USER,
-      });
+      const expectedUser = {
+        name: 'Blue Pen',
+        email: 'bluepen@test.com',
+        password: 'test123',
+        birthDate: '12.02.1969',
+      };
 
-      expect(response.data.data.createUser.email).to.be.deep.eq(EXPECTED_USER.data.email);
-      expect(response.data.data.createUser.name).to.be.deep.eq(EXPECTED_USER.data.name);
-      expect(response.data.data.createUser.birthDate).to.be.deep.eq(EXPECTED_USER.data.birthDate);
+      const response = await axios.post(`http://localhost:3001/`, {
+        query: `
+  mutation CreateUser($data: UserInput) {
+      createUser(data: $data) {
+        id
+        name
+        email
+        password
+        birthDate
+      }
+    }
+  `,
+        variables: { data: expectedUser },
+      });
+      const { id, ...expectedResponse } = response.data.data.createUser;
+
+      const hashedPassword = passwordHashing(expectedUser.password);
+
+      const userFromDB = await AppDataSource.getRepository(User).findOneBy({ email: expectedUser.email });
+
+      expect(userFromDB.email).to.be.deep.eq(expectedUser.email);
+
+      expect(expectedResponse).to.be.deep.eq({
+        name: expectedUser.name,
+        email: expectedUser.email,
+        password: hashedPassword,
+        birthDate: expectedUser.birthDate,
+      });
     });
   });
 
