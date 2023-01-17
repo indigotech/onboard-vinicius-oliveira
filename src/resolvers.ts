@@ -18,7 +18,7 @@ export const resolvers = {
       user.password = hashedPassword;
       user.birthDate = data.birthDate;
 
-      checkPassword(user.password);
+      await checkPassword(data.password);
       await checkEmail(user.email);
 
       await AppDataSource.manager.save(user);
@@ -27,7 +27,7 @@ export const resolvers = {
   },
 };
 
-function checkPassword(string) {
+async function checkPassword(string: string) {
   if (string.length < 6) {
     throw new Error('Password must contain More than 6 characters');
   }
@@ -45,6 +45,6 @@ async function checkEmail(inputEmail) {
   }
 }
 
-function passwordHashing(password) {
+export function passwordHashing(password) {
   return crypto.createHash('sha256').update(password).digest('base64');
 }

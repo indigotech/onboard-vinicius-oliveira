@@ -16,6 +16,7 @@
   "dependencies": {
     "@apollo/server": "4.3.0",
     "axios": "1.2.2",
+    "dotenv": "16.0.3",
     "graphql": "16.6.0",
     "pg": "8.8.0",
     "reflect-metadata": "0.1.13",

@@ -1,15 +1,18 @@
-import axios from 'axios';
+import * as dotenv from 'dotenv';
+import { startApp } from '../app-setup';
+
 import {} from 'mocha';
-import { expect } from 'chai';
+import { dropDB } from '../data-source';
 
-describe('GraphQL Hello Query', () => {
-  it('returns "Hello World"', async () => {
-    const query = `query { hello } `;
+dotenv.config({ path: __dirname + '/../../test.env' });
 
-    const request = await axios.post('http://localhost:3001/', { query });
-
-    const queryResponseField = request.data;
-
-    expect(queryResponseField).to.be.deep.eq({ data: { hello: 'Hello World' } });
-  });
+before(async () => {
+  await startApp();
 });
+
+after(async () => {
+  await dropDB();
+});
+
+require('./query.test');
+require('./create-user.test');

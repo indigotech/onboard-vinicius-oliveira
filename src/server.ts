@@ -7,10 +7,8 @@ import { resolvers } from './resolvers';
 export const startApolloServer = async () => {
   const server = new ApolloServer({ typeDefs, resolvers });
 
-  const PORT = 3001;
-
   const { url } = await startStandaloneServer(server, {
-    listen: { port: PORT },
+    listen: { port: Number(process.env.PORT) },
   });
 
   console.log(`Server running at: localhost:${url}`);
