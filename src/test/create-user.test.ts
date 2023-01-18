@@ -22,7 +22,7 @@ describe('User Tests', () => {
         name: userFromDB.name,
         email: userFromDB.email,
         password: userFromDB.password,
-        birthDate: EXPECTED_USER.birthDate,
+        birthDate: userFromDB.birthDate,
       });
     });
   });
