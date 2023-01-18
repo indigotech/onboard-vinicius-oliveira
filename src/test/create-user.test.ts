@@ -1,83 +1,62 @@
 import axios from 'axios';
 import { expect } from 'chai';
 import { AppDataSource } from '../data-source';
-import { passwordHashing } from '../resolvers';
 import { User } from '../User';
-import { EXPECTED_USER, MUTATION, TEST_URL } from './test-constants';
+import { EXPECTED_USER, CREATE_USER_MUTATION, TEST_URL } from './test-constants';
 
 describe('User Tests', () => {
   describe('createUser mutation', () => {
     it('Should create a new user', async () => {
-      const expectedUser = {
-        name: 'Blue Pen',
-        email: 'bluepen@test.com',
-        password: 'test123',
-        birthDate: '12.02.1969',
-      };
-
-      const response = await axios.post(`http://localhost:3001/`, {
-        query: `
-  mutation CreateUser($data: UserInput) {
-      createUser(data: $data) {
-        id
-        name
-        email
-        password
-        birthDate
-      }
-    }
-  `,
-        variables: { data: expectedUser },
+      const response = await axios.post(TEST_URL, {
+        query: CREATE_USER_MUTATION,
+        variables: { data: EXPECTED_USER },
       });
+
       const { id, ...expectedResponse } = response.data.data.createUser;
 
-      const hashedPassword = passwordHashing(expectedUser.password);
+      const userFromDB = await AppDataSource.getRepository(User).findOneBy({ email: expectedResponse.email });
 
-      const userFromDB = await AppDataSource.getRepository(User).findOneBy({ email: expectedUser.email });
-
-      expect(userFromDB.email).to.be.deep.eq(expectedUser.email);
+      expect(userFromDB.email).to.be.deep.eq(EXPECTED_USER.email);
 
       expect(expectedResponse).to.be.deep.eq({
-        name: expectedUser.name,
-        email: expectedUser.email,
-        password: hashedPassword,
-        birthDate: expectedUser.birthDate,
+        name: userFromDB.name,
+        email: userFromDB.email,
+        password: userFromDB.password,
+        birthDate: EXPECTED_USER.birthDate,
       });
     });
   });
 
-  describe('Try to create new User with duplicate e-mail', () => {
+  describe('Existing e-mail checking test', () => {
     it('Should return an error when trying to Sign Up with duplicate e-mail', async () => {
       const response = await axios.post(TEST_URL, {
-        query: MUTATION,
-        variables: EXPECTED_USER,
+        query: CREATE_USER_MUTATION,
+        variables: { data: EXPECTED_USER },
       });
 
       expect(response.data.errors[0]).to.be.deep.eq({ message: 'This e-mail is alredy in use', code: 401 });
     });
   });
 
-  describe('Try to create new User with small password', () => {
+  describe('Password validation tests', () => {
     it('Should return an error when trying to Sign Up with a password shorter than 6 chatacters', async () => {
-      EXPECTED_USER.data.password = 'short1';
+      EXPECTED_USER.password = 'short1';
 
       const response = await axios.post(TEST_URL, {
-        query: MUTATION,
-        variables: EXPECTED_USER,
+        query: CREATE_USER_MUTATION,
+        variables: { data: EXPECTED_USER },
       });
 
       expect(response.data.errors[0]).to.be.deep.eq({ message: 'This e-mail is alredy in use', code: 401 });
     });
-  });
 
-  describe('Try to create new User with inadequate password', () => {
     it('Should return an error when trying to Sign Up with a password that only contains number or text', async () => {
-      EXPECTED_USER.data.email = 'redpen@test.com';
-      EXPECTED_USER.data.password = 'password';
+      EXPECTED_USER.email = 'redpen@test.com';
+      EXPECTED_USER.password = 'password';
 
       const response = await axios.post(TEST_URL, {
-        query: MUTATION,
-        variables: EXPECTED_USER,
+        query: CREATE_USER_MUTATION,
+        variables: { data: EXPECTED_USER },
       });
 
       expect(response.data.errors[0]).to.be.deep.eq({

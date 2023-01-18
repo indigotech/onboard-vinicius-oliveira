@@ -3,8 +3,6 @@ import { AppDataSource } from './data-source';
 import crypto from 'crypto';
 import { CustomError } from './test/format-error';
 
-const userRepository = AppDataSource.getRepository(User);
-
 export const resolvers = {
   Query: {
     hello: () => {
@@ -21,8 +19,8 @@ export const resolvers = {
       user.password = hashedPassword;
       user.birthDate = data.birthDate;
 
-      await checkPassword(data.password);
-      await checkEmail(user.email);
+      checkPassword(data.password);
+      await checkEmail(data.email);
 
       await AppDataSource.manager.save(user);
       return user;
@@ -30,7 +28,9 @@ export const resolvers = {
   },
 };
 
-async function checkPassword(password: string) {
+const userRepository = AppDataSource.getRepository(User);
+
+function checkPassword(password: string) {
   if (password.length < 6) {
     throw new CustomError('Password must contain more than 6 characters', 401);
   }
