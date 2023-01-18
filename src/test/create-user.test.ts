@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { expect } from 'chai';
+import { passwordHashing } from '../resolvers';
 import { AppDataSource } from '../data-source';
 import { User } from '../User';
 import { EXPECTED_USER, CREATE_USER_MUTATION, TEST_URL } from './test-constants';
@@ -12,18 +13,26 @@ describe('User Tests', () => {
         variables: { data: EXPECTED_USER },
       });
 
-      const { id, ...expectedResponse } = response.data.data.createUser;
+      const expectedResponse = response.data.data.createUser;
+      const { id, ...expectedInput } = response.data.data.createUser;
+      const hashedExpectedPassword = passwordHashing(EXPECTED_USER.password);
+
+      const expectedDBUser = {
+        id: 1,
+        name: 'Blue Pen',
+        email: 'bluepen@test.com',
+        password: hashedExpectedPassword,
+        birthDate: '12.02.1969',
+      };
 
       const userFromDB = await AppDataSource.getRepository(User).findOneBy({ email: expectedResponse.email });
 
-      expect(userFromDB.email).to.be.deep.eq(EXPECTED_USER.email);
+      EXPECTED_USER.password = hashedExpectedPassword;
 
-      expect(expectedResponse).to.be.deep.eq({
-        name: userFromDB.name,
-        email: userFromDB.email,
-        password: userFromDB.password,
-        birthDate: userFromDB.birthDate,
-      });
+      //Comparing the sent input to the response without an id
+      expect(EXPECTED_USER).to.be.deep.eq(expectedInput);
+      //Comparing an User fetched from the Database to an expected User Object
+      expect(userFromDB).to.be.deep.eq(expectedDBUser);
     });
   });
 
