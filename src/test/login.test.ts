@@ -2,8 +2,6 @@ import { DEFAULT_USER_LOGIN, LOGIN_MUTATION, TEST_URL } from './test-constants';
 
 import axios from 'axios';
 import { expect } from 'chai';
-import { AppDataSource } from '../data-source';
-import { User } from '../User';
 
 describe('Login Tests', () => {
   it('Should be able to Login', async () => {
