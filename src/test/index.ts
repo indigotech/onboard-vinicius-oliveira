@@ -12,6 +12,7 @@ before(async () => {
 
 require('./query.test');
 require('./create-user.test');
+require('./login.test');
 
 after(async () => {
   await dropDB();

@@ -5,7 +5,17 @@ export interface UserInput {
   birthDate: string;
 }
 
-export const EXPECTED_USER: UserInput = {
+export interface LoginInput {
+  email: string;
+  password: string;
+}
+
+export const DEFAULT_USER_LOGIN: LoginInput = {
+  email: 'bluepen@test.com',
+  password: 'test123',
+};
+
+export const DEFAULT_USER: UserInput = {
   name: 'Blue Pen',
   email: 'bluepen@test.com',
   password: 'test123',
@@ -15,13 +25,27 @@ export const EXPECTED_USER: UserInput = {
 export const TEST_URL = 'http://localhost:3001/';
 
 export const CREATE_USER_MUTATION = `
-  mutation CreateUser($data: UserInput) {
-      createUser(data: $data) {
-        id
-        name
-        email
-        password
-        birthDate
-      }
+mutation CreateUser($data: UserInput) {
+  createUser(data: $data) {
+    id
+    name
+    email
+    password
+    birthDate
+  }
+}
+`;
+
+export const LOGIN_MUTATION = `
+mutation Mutation($data: LoginInput) {
+  login(data: $data) {
+    user {
+      id
+      email
+      name
+      birthDate
     }
-  `;
+    token
+  }
+}
+`;
