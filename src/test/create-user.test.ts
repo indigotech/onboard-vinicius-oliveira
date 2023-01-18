@@ -1,45 +1,77 @@
 import axios from 'axios';
 import { expect } from 'chai';
+import { passwordHashing } from '../resolvers';
 import { AppDataSource } from '../data-source';
 import { User } from '../User';
-import { passwordHashing } from '../resolvers';
+import { EXPECTED_USER, CREATE_USER_MUTATION, TEST_URL } from './test-constants';
 
-describe('createUser mutation', () => {
-  it('should create a new user', async () => {
-    const expectedUser = {
-      name: 'Blue Pen',
-      email: 'bluepen@test.com',
-      password: 'test123',
-      birthDate: '12.02.1969',
-    };
+describe('User Tests', () => {
+  describe('createUser mutation', () => {
+    it('Should create a new user', async () => {
+      const response = await axios.post(TEST_URL, {
+        query: CREATE_USER_MUTATION,
+        variables: { data: EXPECTED_USER },
+      });
 
-    const response = await axios.post(`http://localhost:3001/`, {
-      query: `
-      mutation CreateUser($data: UserInput) {
-          createUser(data: $data) {
-            id
-            name
-            email
-            password
-            birthDate
-          }
-        }
-      `,
-      variables: { data: expectedUser },
+      const expectedResponse = response.data.data.createUser;
+      const { id, ...expectedInput } = response.data.data.createUser;
+      const hashedExpectedPassword = passwordHashing(EXPECTED_USER.password);
+
+      const expectedDBUser = {
+        id: 1,
+        name: 'Blue Pen',
+        email: 'bluepen@test.com',
+        password: hashedExpectedPassword,
+        birthDate: '12.02.1969',
+      };
+
+      const userFromDB = await AppDataSource.getRepository(User).findOneBy({ email: expectedResponse.email });
+
+      EXPECTED_USER.password = hashedExpectedPassword;
+
+      //Comparing the sent input to the response without an id
+      expect(EXPECTED_USER).to.be.deep.eq(expectedInput);
+      //Comparing an User fetched from the Database to an expected User Object
+      expect(userFromDB).to.be.deep.eq(expectedDBUser);
     });
-    const { id, ...expectedResponse } = response.data.data.createUser;
+  });
 
-    const hashedPassword = passwordHashing(expectedUser.password);
+  describe('Existing e-mail checking test', () => {
+    it('Should return an error when trying to Sign Up with duplicate e-mail', async () => {
+      const response = await axios.post(TEST_URL, {
+        query: CREATE_USER_MUTATION,
+        variables: { data: EXPECTED_USER },
+      });
 
-    const userFromDB = await AppDataSource.getRepository(User).findOneBy({ email: expectedUser.email });
+      expect(response.data.errors[0]).to.be.deep.eq({ message: 'This e-mail is alredy in use', code: 401 });
+    });
+  });
 
-    expect(userFromDB.email).to.be.deep.eq(expectedUser.email);
+  describe('Password validation tests', () => {
+    it('Should return an error when trying to Sign Up with a password shorter than 6 chatacters', async () => {
+      EXPECTED_USER.password = 'short1';
 
-    expect(expectedResponse).to.be.deep.eq({
-      name: expectedUser.name,
-      email: expectedUser.email,
-      password: hashedPassword,
-      birthDate: expectedUser.birthDate,
+      const response = await axios.post(TEST_URL, {
+        query: CREATE_USER_MUTATION,
+        variables: { data: EXPECTED_USER },
+      });
+
+      expect(response.data.errors[0]).to.be.deep.eq({ message: 'This e-mail is alredy in use', code: 401 });
+    });
+
+    it('Should return an error when trying to Sign Up with a password that only contains number or text', async () => {
+      EXPECTED_USER.email = 'redpen@test.com';
+      EXPECTED_USER.password = 'password';
+
+      const response = await axios.post(TEST_URL, {
+        query: CREATE_USER_MUTATION,
+        variables: { data: EXPECTED_USER },
+      });
+
+      expect(response.data.errors[0]).to.be.deep.eq({
+        message: 'Password must contain at Least 1 Number and 1 Letter',
+        code: 401,
+      });
     });
   });
 });
