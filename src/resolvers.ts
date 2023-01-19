@@ -37,7 +37,7 @@ export const resolvers = {
         throw new CustomError('User not found, please create an account, or review credentials', 401);
       }
 
-      const token = generateToken(user.id);
+      const token = generateToken(user.id, data.rememberMe);
 
       return {
         user: user,

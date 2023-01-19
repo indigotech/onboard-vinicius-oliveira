@@ -31,12 +31,12 @@ type UserOutput {
 input LoginInput {
     email: String!
     password: String!
+    rememberMe: Boolean!
 }
 
 type LoginOutput {
     user: UserOutput!
     token: String!
-
 }
 
 type Mutation {
