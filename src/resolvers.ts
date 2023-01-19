@@ -1,7 +1,11 @@
 import { User } from './User';
 import { AppDataSource } from './data-source';
 import { CustomError } from './test/format-error';
+<<<<<<< HEAD
 import { checkEmail, checkPassword, checkToken, generateToken, passwordHashing, userRepository } from './utils';
+=======
+import jwt from 'jsonwebtoken';
+>>>>>>> 8a6c25e (create token function)
 
 export const resolvers = {
   Query: {
@@ -48,7 +52,11 @@ export const resolvers = {
         throw new CustomError('User not found, please create an account, or review credentials', 401);
       }
 
+<<<<<<< HEAD
       const token = generateToken(user.id, data.rememberMe);
+=======
+      const token = generateToken(user.id);
+>>>>>>> 8a6c25e (create token function)
 
       return {
         user: user,
@@ -57,3 +65,36 @@ export const resolvers = {
     },
   },
 };
+<<<<<<< HEAD
+=======
+
+const userRepository = AppDataSource.getRepository(User);
+
+function checkPassword(password: string) {
+  if (password.length < 6) {
+    throw new CustomError('Password must contain more than 6 characters', 401);
+  }
+
+  const regex = /([0-9].*[a-z])|([a-z].*[0-9])/;
+
+  if (!regex.test(password)) {
+    throw new CustomError('Password must contain at Least 1 Number and 1 Letter', 401);
+  }
+}
+
+async function checkEmail(inputEmail: string) {
+  if (await userRepository.findOneBy({ email: inputEmail })) {
+    throw new CustomError('This e-mail is alredy in use', 401);
+  }
+}
+
+export function passwordHashing(password: string) {
+  return crypto.createHash('sha256').update(password).digest('base64');
+}
+
+const TOKEN_SECRET = 'May the F0rc3 be w!th you';
+
+export function generateToken(userId: number) {
+  return jwt.sign({ userId: userId }, TOKEN_SECRET, { expiresIn: '300' });
+}
+>>>>>>> 8a6c25e (create token function)
