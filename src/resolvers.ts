@@ -37,9 +37,11 @@ export const resolvers = {
         throw new CustomError('User not found, please create an account, or review credentials', 401);
       }
 
+      const token = generateToken(user.id);
+
       return {
         user: user,
-        token: 'the_token',
+        token: token,
       };
     },
   },
