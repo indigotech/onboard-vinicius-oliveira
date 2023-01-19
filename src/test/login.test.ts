@@ -1,5 +1,7 @@
 import { DEFAULT_USER_LOGIN, LOGIN_MUTATION, TEST_URL } from './test-constants';
 
+import { generateToken } from '../resolvers';
+
 import axios from 'axios';
 import { expect } from 'chai';
 
@@ -10,7 +12,11 @@ describe('Login Tests', () => {
       variables: { data: DEFAULT_USER_LOGIN },
     });
 
-    expect(response.data.data).to.be.deep.eq({
+    const expectedResponse = response.data.data;
+
+    const token = generateToken(expectedResponse.login.user.id, DEFAULT_USER_LOGIN.rememberMe);
+
+    expect(expectedResponse).to.be.deep.eq({
       login: {
         user: {
           id: 1,
@@ -18,7 +24,7 @@ describe('Login Tests', () => {
           name: 'Blue Pen',
           birthDate: '12.02.1969',
         },
-        token: 'the_token',
+        token: token,
       },
     });
   });

@@ -36,7 +36,7 @@ export const resolvers = {
         throw new CustomError('User not found, please create an account, or review credentials', 401);
       }
 
-      const token = generateToken(user.id);
+      const token = generateToken(user.id, data.rememberMe);
 
       return {
         user: user,
@@ -72,6 +72,6 @@ export function passwordHashing(password: string) {
 
 const TOKEN_SECRET = 'May the F0rc3 be w!th you';
 
-export function generateToken(userId: number) {
-  return jwt.sign({ userId: userId }, TOKEN_SECRET, { expiresIn: '300' });
+export function generateToken(userId: number, rememberMe: boolean) {
+  return jwt.sign({ userId: userId }, TOKEN_SECRET, { expiresIn: rememberMe === true ? '7d' : '1d' });
 }

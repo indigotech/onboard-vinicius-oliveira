@@ -8,11 +8,13 @@ export interface UserInput {
 export interface LoginInput {
   email: string;
   password: string;
+  rememberMe: boolean;
 }
 
 export const DEFAULT_USER_LOGIN: LoginInput = {
   email: 'bluepen@test.com',
   password: 'test123',
+  rememberMe: true,
 };
 
 export const DEFAULT_USER: UserInput = {
