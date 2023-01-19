@@ -74,3 +74,14 @@ describe('Create User Mutation', () => {
     expect(response.data.errors[0]).to.be.deep.eq({ message: 'Authentication Failed', code: 401 });
   });
 });
+
+async function createFirstUser() {
+  const user = new User();
+
+  user.name = 'firstUser';
+  user.email = 'firstUser@test.com.br';
+  user.password = passwordHashing('password123');
+  user.birthDate = '02.03.1990';
+
+  await AppDataSource.manager.save(user);
+}
