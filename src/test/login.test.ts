@@ -1,4 +1,4 @@
-import { DEFAULT_USER_LOGIN, LOGIN_MUTATION, TEST_URL } from './test-constants';
+import { DEFAULT_USER_LOGIN, LOGIN_MUTATION, TEST_URL } from './test-constants.utils';
 
 import { generateToken } from '../resolvers';
 
@@ -19,7 +19,7 @@ describe('Login Tests', () => {
     expect(expectedResponse).to.be.deep.eq({
       login: {
         user: {
-          id: 1,
+          id: 2,
           email: 'bluepen@test.com',
           name: 'Blue Pen',
           birthDate: '12.02.1969',

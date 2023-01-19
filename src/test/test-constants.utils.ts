@@ -1,3 +1,5 @@
+import { generateToken } from '../resolvers';
+
 export interface UserInput {
   name: string;
   email: string;
@@ -11,13 +13,15 @@ export interface LoginInput {
   rememberMe: boolean;
 }
 
+export const headers = { Authorization: generateToken(1, false) };
+
 export const DEFAULT_USER_LOGIN: LoginInput = {
   email: 'bluepen@test.com',
   password: 'test123',
   rememberMe: true,
 };
 
-export const DEFAULT_USER: UserInput = {
+export const EXPECTED_USER: UserInput = {
   name: 'Blue Pen',
   email: 'bluepen@test.com',
   password: 'test123',

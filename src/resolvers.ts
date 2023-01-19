@@ -16,7 +16,11 @@ export const resolvers = {
 
       const tokenUserId = checkToken(token);
 
-      userRepository.findOneBy({ id: tokenUserId });
+      const authUser = await userRepository.findOneBy({ id: tokenUserId });
+
+      if (!authUser) {
+        throw new CustomError('Authentication Failed', 401, 'No token Found');
+      }
 
       const user = new User();
       const hashedPassword = passwordHashing(data.password);
@@ -55,7 +59,7 @@ export const resolvers = {
 const userRepository = AppDataSource.getRepository(User);
 
 function checkPassword(password: string) {
-  if (password.length < 6) {
+  if (password.length < 7) {
     throw new CustomError('Password must contain more than 6 characters', 401);
   }
 
@@ -91,9 +95,13 @@ function checkToken(token: string) {
     throw new CustomError('Authentication Failed', 401, 'No token Found');
   }
 
-  const tokenPayload = jwt.verify(token, process.env.TOKEN_SECRET) as JWTpayload;
+  try {
+    const tokenPayload = jwt.verify(token, process.env.TOKEN_SECRET) as JWTpayload;
 
-  const userIdToken = tokenPayload.userId;
+    const userIdToken = tokenPayload.userId;
 
-  return userIdToken;
+    return userIdToken;
+  } catch (err) {
+    throw new CustomError('Authentication Failed', 401, 'Sent Invalid Token');
+  }
 }
