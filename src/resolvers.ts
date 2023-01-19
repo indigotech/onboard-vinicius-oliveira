@@ -70,8 +70,6 @@ export function passwordHashing(password: string) {
   return crypto.createHash('sha256').update(password).digest('base64');
 }
 
-const TOKEN_SECRET = 'May the F0rc3 be w!th you';
-
 export function generateToken(userId: number, rememberMe: boolean) {
-  return jwt.sign({ userId: userId }, TOKEN_SECRET, { expiresIn: rememberMe === true ? '7d' : '1d' });
+  return jwt.sign({ userId: userId }, process.env.TOKEN_SECRET, { expiresIn: rememberMe === true ? '7d' : '1d' });
 }
