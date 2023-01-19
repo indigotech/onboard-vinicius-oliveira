@@ -11,7 +11,13 @@ export const resolvers = {
     },
   },
   Mutation: {
-    async createUser(_, { data }) {
+    async createUser(_, { data }, context) {
+      const token = context.headers.authorization;
+
+      const tokenUserId = checkToken(token);
+
+      userRepository.findOneBy({ id: tokenUserId });
+
       const user = new User();
       const hashedPassword = passwordHashing(data.password);
 
@@ -72,4 +78,22 @@ export function passwordHashing(password: string) {
 
 export function generateToken(userId: number, rememberMe: boolean) {
   return jwt.sign({ userId: userId }, process.env.TOKEN_SECRET, { expiresIn: rememberMe === true ? '7d' : '1d' });
+}
+
+interface JWTpayload {
+  userId: number;
+  iat: number;
+  exp: number;
+}
+
+function checkToken(token: string) {
+  if (!token) {
+    throw new CustomError('Authentication Failed', 401, 'No token Found');
+  }
+
+  const tokenPayload = jwt.verify(token, process.env.TOKEN_SECRET) as JWTpayload;
+
+  const userIdToken = tokenPayload.userId;
+
+  return userIdToken;
 }
