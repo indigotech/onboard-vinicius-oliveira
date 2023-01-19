@@ -2,6 +2,7 @@ import { User } from './User';
 import { AppDataSource } from './data-source';
 import crypto from 'crypto';
 import { CustomError } from './test/format-error';
+import jwt from 'jsonwebtoken';
 
 export const resolvers = {
   Query: {
@@ -35,9 +36,11 @@ export const resolvers = {
         throw new CustomError('User not found, please create an account, or review credentials', 401);
       }
 
+      const token = generateToken(user.id);
+
       return {
         user: user,
-        token: 'the_token',
+        token: token,
       };
     },
   },
@@ -65,4 +68,10 @@ async function checkEmail(inputEmail: string) {
 
 export function passwordHashing(password: string) {
   return crypto.createHash('sha256').update(password).digest('base64');
+}
+
+const TOKEN_SECRET = 'May the F0rc3 be w!th you';
+
+export function generateToken(userId: number) {
+  return jwt.sign({ userId: userId }, TOKEN_SECRET, { expiresIn: '300' });
 }
