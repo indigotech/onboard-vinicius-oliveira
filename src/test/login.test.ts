@@ -39,7 +39,7 @@ describe('Login Tests', () => {
     expect(expectedResponse).to.be.deep.eq({
       login: {
         user: {
-          id: 1,
+          id: 2,
           email: 'bluepen@test.com',
           name: 'Blue Pen',
           birthDate: '12.02.1969',
