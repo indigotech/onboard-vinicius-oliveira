@@ -2,7 +2,7 @@ import * as dotenv from 'dotenv';
 import { startApp } from '../app-setup';
 
 import {} from 'mocha';
-import { AppDataSource, dropDB } from '../data-source';
+import { dropDB } from '../data-source';
 
 dotenv.config({ path: __dirname + '/../../test.env' });
 
