@@ -10,9 +10,9 @@ before(async () => {
   await startApp();
 });
 
-require('./query.test');
-require('./create-user.test');
-
 after(async () => {
   await dropDB();
 });
+
+require('./create-user.test');
+require('./login.test');
