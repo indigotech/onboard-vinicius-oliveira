@@ -1,27 +1,35 @@
-import { generateToken } from '../resolvers';
+import { LoginInput, LoginOutput, UserInput, UserOutput } from '../interfaces';
+import { passwordHashing } from '../utils';
 
-export interface UserInput {
-  name: string;
-  email: string;
-  password: string;
-  birthDate: string;
-}
+export const EXPECTED_REGISTERED_USER = {
+  id: 1,
+  name: 'Blue Pen',
+  email: 'bluepen@test.com',
+  password: passwordHashing('test123'),
+  birthDate: '12.02.1969',
+};
 
-export interface LoginInput {
-  email: string;
-  password: string;
-  rememberMe: boolean;
-}
-
-export const headers = { Authorization: generateToken(1, false) };
-
-export const DEFAULT_USER_LOGIN: LoginInput = {
+export const DEFAULT_USER_LOGIN_INPUT: LoginInput = {
   email: 'bluepen@test.com',
   password: 'test123',
   rememberMe: true,
 };
 
-export const EXPECTED_USER: UserInput = {
+export const EXPECTED_USER_OUTPUT: UserOutput = {
+  id: 1,
+  name: 'Blue Pen',
+  email: 'bluepen@test.com',
+  birthDate: '12.02.1969',
+};
+
+export const EXPECTED_LOGIN_OUTPUT = (token: string): LoginOutput => {
+  return {
+    user: EXPECTED_USER_OUTPUT,
+    token: token,
+  };
+};
+
+export const DEFAULT_USER_INPUT: UserInput = {
   name: 'Blue Pen',
   email: 'bluepen@test.com',
   password: 'test123',
@@ -36,7 +44,6 @@ mutation CreateUser($data: UserInput) {
     id
     name
     email
-    password
     birthDate
   }
 }
