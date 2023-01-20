@@ -9,6 +9,7 @@ dotenv.config({ path: __dirname + '/../../test.env' });
 before(async () => {
   await startApp();
 });
+require('./find-user.test');
 
 after(async () => {
   await dropDB();

@@ -8,6 +8,17 @@ export const resolvers = {
     hello: () => {
       return 'Hello World';
     },
+    findUserById: async (_, { id }, context) => {
+      await validateToken(context);
+
+      const foundUser = await userRepository.findOneBy({ id: id });
+
+      if (!foundUser) {
+        throw new CustomError('User not present in the database', 401);
+      }
+
+      return foundUser;
+    },
   },
   Mutation: {
     async createUser(_, { data }, context) {
