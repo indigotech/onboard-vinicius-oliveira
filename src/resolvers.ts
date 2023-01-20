@@ -27,5 +27,22 @@ export const resolvers = {
       await AppDataSource.manager.save(user);
       return user;
     },
+    async login(_, { data }) {
+      const user = await userRepository.findOneBy({
+        email: data.email,
+        password: passwordHashing(data.password),
+      });
+
+      if (!user) {
+        throw new CustomError('User not found, please create an account, or review credentials', 401);
+      }
+
+      const token = generateToken(user.id, data.rememberMe);
+
+      return {
+        user: user,
+        token: token,
+      };
+    },
   },
 };

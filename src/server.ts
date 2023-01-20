@@ -10,6 +10,11 @@ export const startApolloServer = async () => {
 
   const { url } = await startStandaloneServer(server, {
     listen: { port: Number(process.env.PORT) },
+
+    context: async ({ req }) => {
+      const headers = req.headers;
+      return { headers };
+    },
   });
 
   console.log(`Server running at: localhost:${url}`);

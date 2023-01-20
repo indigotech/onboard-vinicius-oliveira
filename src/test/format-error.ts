@@ -25,6 +25,6 @@ export function formatError(formattedError: GraphQLFormattedError, error: unknow
       code: originalError.code,
     };
   } else {
-    return { message: 'Internal Server Error', code: 500 };
+    return { message: 'Internal Server Error', code: 500, details: (error as Error).message };
   }
 }
