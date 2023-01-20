@@ -62,3 +62,22 @@ mutation Mutation($data: LoginInput) {
   }
 }
 `;
+
+export const FIND_USER_BY_ID_QUERY = `
+query FindUserById($findUserByIdId: Int) {
+  findUserById(id: $findUserByIdId) {
+    id
+    name
+    email
+    birthDate
+  }
+}
+`;
+
+export const DEFAULT_USER: UserOutput = {
+  id: 1,
+  name: 'firstUser',
+  email: 'firstUser@test.com.br',
+  password: passwordHashing('password123'),
+  birthDate: '02.03.1990',
+};
