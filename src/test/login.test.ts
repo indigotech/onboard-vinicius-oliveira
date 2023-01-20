@@ -34,7 +34,7 @@ describe('Login Tests', () => {
 =======
     const expectedResponse = response.data.data;
 
-    const token = generateToken(expectedResponse.login.user.id, DEFAULT_USER_LOGIN.rememberMe);
+    const response = await axiosLoginUser(DEFAULT_USER_LOGIN_INPUT);
 
     expect(expectedResponse).to.be.deep.eq({
       login: {
