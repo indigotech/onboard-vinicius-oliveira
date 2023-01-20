@@ -19,7 +19,8 @@ input UserInput {
 }
 
 type Mutation {
-    createUser(data: UserInput): User!
+    createUser(data: UserInput): UserOutput!
+    login(data: LoginInput): LoginOutput!
 }
 
 `);
