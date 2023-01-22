@@ -9,11 +9,11 @@ dotenv.config({ path: __dirname + '/../../test.env' });
 before(async () => {
   await startApp();
 });
-require('./find-user.test');
 
 after(async () => {
   await dropDB();
 });
 
 require('./create-user.test');
+require('./find-user.test');
 require('./login.test');

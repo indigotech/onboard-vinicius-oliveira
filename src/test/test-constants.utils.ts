@@ -64,8 +64,8 @@ mutation Mutation($data: LoginInput) {
 `;
 
 export const FIND_USER_BY_ID_QUERY = `
-query FindUserById($findUserByIdId: Int) {
-  findUserById(id: $findUserByIdId) {
+query User($userId: Int) {
+  user(id: $userId) {
     id
     name
     email
@@ -73,11 +73,3 @@ query FindUserById($findUserByIdId: Int) {
   }
 }
 `;
-
-export const DEFAULT_USER: UserOutput = {
-  id: 1,
-  name: 'firstUser',
-  email: 'firstUser@test.com.br',
-  password: passwordHashing('password123'),
-  birthDate: '02.03.1990',
-};
