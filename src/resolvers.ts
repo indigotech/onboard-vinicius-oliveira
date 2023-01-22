@@ -8,8 +8,8 @@ export const resolvers = {
     hello: () => {
       return 'Hello World';
     },
-    findUserById: async (_, { id }, context) => {
-      await validateToken(context);
+    user: async (_, { id }, context) => {
+      await checkToken(context);
 
       const foundUser = await userRepository.findOneBy({ id: id });
 
@@ -22,8 +22,6 @@ export const resolvers = {
   },
   Mutation: {
     async createUser(_, { data }, context) {
-      checkToken(context);
-
       const user = new User();
       const hashedPassword = passwordHashing(data.password);
 
