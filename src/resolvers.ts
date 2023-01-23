@@ -19,6 +19,15 @@ export const resolvers = {
 
       return foundUser;
     },
+    users: async (_, { limit }, context) => {
+      await checkToken(context);
+
+      return await userRepository
+        .createQueryBuilder('user')
+        .orderBy('user.name')
+        .limit(limit || 10)
+        .getMany();
+    },
   },
   Mutation: {
     async createUser(_, { data }, context) {

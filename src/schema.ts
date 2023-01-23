@@ -5,6 +5,7 @@ export const typeDefs = buildSchema(`
 type Query {
     hello: String
     user (id: Int): UserOutput!
+    users (limit: Int): [UserOutput]
 }
 
 type User {
