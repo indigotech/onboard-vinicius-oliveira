@@ -6,11 +6,11 @@ export const DEFAULT_USER_LOGIN_INPUT: LoginInput = {
   rememberMe: true,
 };
 
-export const EXPECTED_USER_OUTPUT = (userOutput: User) => {
+export const getExpectedUserOutput = (userOutput: User) => {
   return { id: userOutput.id, name: userOutput.name, email: userOutput.email, birthDate: userOutput.birthDate };
 };
 
-export const EXPECTED_LOGIN_OUTPUT = (userOutput: User, token: string): LoginOutput => {
+export const getExpectedLoginOutput = (userOutput: User, token: string): LoginOutput => {
   return {
     user: userOutput,
     token: token,

@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { DEFAULT_USER_INPUT, EXPECTED_USER_OUTPUT } from './test-constants.utils';
+import { DEFAULT_USER_INPUT, getExpectedUserOutput } from './test-constants.utils';
 import { axiosCreateUser } from './queries';
 import { passwordHashing, userRepository } from '../utils';
 
@@ -19,8 +19,7 @@ describe('Create User Mutation', () => {
     expect(DEFAULT_USER_INPUT.email).to.be.deep.eq(userFromDB.email);
     expect(passwordHashing(DEFAULT_USER_INPUT.password)).to.be.deep.eq(userFromDB.password);
     expect(DEFAULT_USER_INPUT.birthDate).to.be.deep.eq(userFromDB.birthDate);
-
-    expect(responseOutput).to.be.deep.eq(EXPECTED_USER_OUTPUT(userFromDB));
+    expect(responseOutput).to.be.deep.eq(getExpectedUserOutput(userFromDB));
   });
 
   it('Should return an error when trying to Sign Up with duplicate e-mail', async () => {

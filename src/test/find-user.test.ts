@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { userRepository } from '../utils';
 import { axiosCreateUser, axiosGetUserById } from './queries';
-import { DEFAULT_USER_INPUT, EXPECTED_USER_OUTPUT } from './test-constants.utils';
+import { DEFAULT_USER_INPUT, getExpectedUserOutput } from './test-constants.utils';
 
 describe('Find User query tests', () => {
   afterEach(async () => {
@@ -17,7 +17,7 @@ describe('Find User query tests', () => {
 
     const responseOutput = response.data.data.user;
 
-    expect(responseOutput).to.be.deep.eq(EXPECTED_USER_OUTPUT(userFromDb));
+    expect(responseOutput).to.be.deep.eq(getExpectedUserOutput(userFromDb));
   });
 
   it('Should return an Error when querying an user with Non-Existing Id', async () => {

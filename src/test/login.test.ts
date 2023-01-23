@@ -8,7 +8,7 @@ import axios from 'axios';
 >>>>>>> 01a87a0 (Adding a Remeber Me function)
 import { expect } from 'chai';
 
-import { DEFAULT_USER_INPUT, DEFAULT_USER_LOGIN_INPUT, EXPECTED_LOGIN_OUTPUT } from './test-constants.utils';
+import { DEFAULT_USER_INPUT, DEFAULT_USER_LOGIN_INPUT, getExpectedLoginOutput } from './test-constants.utils';
 import { axiosCreateUser, axiosLoginUser } from './queries';
 import { userRepository } from '../utils';
 
@@ -29,7 +29,7 @@ describe('Login Tests', () => {
 
     const { password, ...userFromDB } = await userRepository.findOneBy({ email: responseOutput.user.email });
 
-    expect(responseOutput).to.be.deep.eq(EXPECTED_LOGIN_OUTPUT(userFromDB, token));
+    expect(responseOutput).to.be.deep.eq(getExpectedLoginOutput(userFromDB, token));
   });
 
   it('Should return an Error when Sign In with Unregistered User password', async () => {
