@@ -62,10 +62,9 @@ describe('Create User Mutation', () => {
 
     const response = await axiosCreateUser(BAD_USER_INPUT);
 
-      expect(response.data.errors[0]).to.be.deep.eq({
-        message: 'Password must contain at Least 1 Number and 1 Letter',
-        code: 401,
-      });
+    expect(response.data.errors[0]).to.be.deep.eq({
+      message: 'Password must contain at Least 1 Number and 1 Letter',
+      code: 401,
     });
   });
 });
