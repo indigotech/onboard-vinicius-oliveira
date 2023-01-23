@@ -23,6 +23,7 @@ export function formatError(formattedError: GraphQLFormattedError, error: unknow
     return {
       message: originalError.message,
       code: originalError.code,
+      details: originalError.details,
     };
   } else {
     return { message: 'Internal Server Error', code: 500, details: (error as Error).message };

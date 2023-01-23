@@ -1,15 +1,15 @@
-export interface UserInput {
+interface UserCommonFields {
   name: string;
   email: string;
-  password: string;
   birthDate: string;
 }
 
-export interface UserOutput {
+export interface UserInput extends UserCommonFields {
+  password: string;
+}
+
+export interface User extends UserCommonFields {
   id: number;
-  name: string;
-  email: string;
-  birthDate: string;
 }
 
 export interface LoginInput {
@@ -19,7 +19,7 @@ export interface LoginInput {
 }
 
 export interface LoginOutput {
-  user: UserOutput;
+  user: User;
   token: string;
 }
 

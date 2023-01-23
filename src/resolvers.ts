@@ -14,7 +14,7 @@ export const resolvers = {
       const foundUser = await userRepository.findOneBy({ id: id });
 
       if (!foundUser) {
-        throw new CustomError('User not present in the database', 401);
+        throw new CustomError('User not present in the database', 404);
       }
 
       return foundUser;
@@ -22,6 +22,8 @@ export const resolvers = {
   },
   Mutation: {
     async createUser(_, { data }, context) {
+      await checkToken(context);
+
       const user = new User();
       const hashedPassword = passwordHashing(data.password);
 

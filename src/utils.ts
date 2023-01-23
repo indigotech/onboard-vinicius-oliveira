@@ -43,6 +43,6 @@ export function checkToken(context) {
   try {
     jwt.verify(token, process.env.TOKEN_SECRET) as JWTpayload;
   } catch (err) {
-    throw new CustomError('Authentication Failed', 401, 'Sent Invalid Token');
+    throw new CustomError('Authentication Failed', 401);
   }
 }

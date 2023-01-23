@@ -1,13 +1,4 @@
-import { LoginInput, LoginOutput, UserInput, UserOutput } from '../interfaces';
-import { passwordHashing } from '../utils';
-
-export const EXPECTED_REGISTERED_USER = {
-  id: 1,
-  name: 'Blue Pen',
-  email: 'bluepen@test.com',
-  password: passwordHashing('test123'),
-  birthDate: '12.02.1969',
-};
+import { LoginInput, LoginOutput, UserInput, User } from '../interfaces';
 
 export const DEFAULT_USER_LOGIN_INPUT: LoginInput = {
   email: 'bluepen@test.com',
@@ -15,16 +6,13 @@ export const DEFAULT_USER_LOGIN_INPUT: LoginInput = {
   rememberMe: true,
 };
 
-export const EXPECTED_USER_OUTPUT: UserOutput = {
-  id: 1,
-  name: 'Blue Pen',
-  email: 'bluepen@test.com',
-  birthDate: '12.02.1969',
+export const EXPECTED_USER_OUTPUT = (userOutput: User) => {
+  return { id: userOutput.id, name: userOutput.name, email: userOutput.email, birthDate: userOutput.birthDate };
 };
 
-export const EXPECTED_LOGIN_OUTPUT = (token: string): LoginOutput => {
+export const EXPECTED_LOGIN_OUTPUT = (userOutput: User, token: string): LoginOutput => {
   return {
-    user: EXPECTED_USER_OUTPUT,
+    user: userOutput,
     token: token,
   };
 };
