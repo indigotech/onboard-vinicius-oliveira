@@ -4,8 +4,6 @@ import { dropDB, setupDBConnection } from './data-source';
 import { User } from './User';
 import { passwordHashing, userRepository } from './utils';
 
-dotenv.config({ path: __dirname + '/../test.env' });
-
 function randomUser(): User {
   const user = new User();
 
@@ -33,8 +31,4 @@ export async function startSeed() {
   await setupDBConnection();
 
   await populateDb(50);
-
-  dropDB();
 }
-
-startSeed();
