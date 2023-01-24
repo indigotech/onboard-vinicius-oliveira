@@ -67,15 +67,10 @@ describe('Create User Mutation', () => {
       code: 401,
     });
   });
+
+  it('Should return an error when trying to Sign Up a new User without being Logged In', async () => {
+    const response = await axiosCreateUser(DEFAULT_USER_INPUT, 'bad_token');
+
+    expect(response.data.errors[0]).to.be.deep.eq({ message: 'Authentication Failed', code: 401 });
+  });
 });
-
-async function createFirstUser() {
-  const user = new User();
-
-  user.name = 'firstUser';
-  user.email = 'firstUser@test.com.br';
-  user.password = passwordHashing('password123');
-  user.birthDate = '02.03.1990';
-
-  await AppDataSource.manager.save(user);
-}
