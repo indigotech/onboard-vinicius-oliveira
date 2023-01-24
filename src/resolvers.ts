@@ -35,7 +35,7 @@ export const resolvers = {
 
       const tagetPage = limit * (page - 1);
 
-      console.log(limit * page);
+      const after = totalUsers - (tagetPage + limit);
 
       if (page <= 0) {
         throw new CustomError('Page number must be greater than 0', 401);
@@ -54,8 +54,8 @@ export const resolvers = {
       return {
         location: `Page ${page} of ${pageNum}`,
         total: totalUsers,
-        after: 0,
-        before: 0,
+        after: after,
+        before: tagetPage,
         users: users,
       };
     },
