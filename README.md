@@ -17,7 +17,7 @@ $ git clone https://github.com/indigotech/onboard-vinicius-oliveira.git
 Secondly, Install the project's dependencies:
 
 ```bash
-$ npm install --legacy-peer-deps
+$ npm install
 ```
 Run this Docker command:
 

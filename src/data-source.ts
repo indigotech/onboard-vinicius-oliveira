@@ -4,11 +4,6 @@ import { User } from './User';
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
-  host: 'localhost',
-  port: 5432,
-  username: 'vbersano',
-  password: 'pharao123',
-  database: 'vbersano',
   synchronize: true,
   logging: false,
   entities: [User],
@@ -16,6 +11,11 @@ export const AppDataSource = new DataSource({
 
 // Database Connection and start Server Setup
 export const setupDBConnection = async () => {
-  await AppDataSource.initialize();
-  console.log('Hello from Postgres!');
+  await AppDataSource.setOptions({ url: process.env.DB_URL }).initialize();
+  console.info('Hello from Postgres!');
+};
+
+export const dropDB = async () => {
+  await AppDataSource.dropDatabase();
+  console.info(`Database Dropped!`);
 };

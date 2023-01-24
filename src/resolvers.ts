@@ -1,15 +1,29 @@
 import { User } from './User';
 import { AppDataSource } from './data-source';
-import crypto from 'crypto';
-
-const userRepository = AppDataSource.getRepository(User);
+import { CustomError } from './test/format-error';
+import { checkEmail, checkPassword, checkToken, generateToken, passwordHashing, userRepository } from './utils';
 
 export const resolvers = {
   Query: {
-    hello: () => 'Hello World',
+    hello: () => {
+      return 'Hello World';
+    },
+    user: async (_, { id }, context) => {
+      await checkToken(context);
+
+      const foundUser = await userRepository.findOneBy({ id: id });
+
+      if (!foundUser) {
+        throw new CustomError('User not present in the database', 404);
+      }
+
+      return foundUser;
+    },
   },
   Mutation: {
-    async createUser(_, { data }) {
+    async createUser(_, { data }, context) {
+      await checkToken(context);
+
       const user = new User();
       const hashedPassword = passwordHashing(data.password);
 
@@ -18,33 +32,28 @@ export const resolvers = {
       user.password = hashedPassword;
       user.birthDate = data.birthDate;
 
-      checkPassword(user.password);
-      await checkEmail(user.email);
+      checkPassword(data.password);
+      await checkEmail(data.email);
 
       await AppDataSource.manager.save(user);
       return user;
     },
+    async login(_, { data }) {
+      const user = await userRepository.findOneBy({
+        email: data.email,
+        password: passwordHashing(data.password),
+      });
+
+      if (!user) {
+        throw new CustomError('User not found, please create an account, or review credentials', 401);
+      }
+
+      const token = generateToken(user.id, data.rememberMe);
+
+      return {
+        user: user,
+        token: token,
+      };
+    },
   },
 };
-
-function checkPassword(string) {
-  if (string.length < 6) {
-    throw new Error('Password must contain More than 6 characters');
-  }
-
-  const regex = /([0-9].*[a-z])|([a-z].*[0-9])/;
-
-  if (!regex.test(string)) {
-    throw new Error('Password must contain at Least 1 Number and 1 Letter');
-  }
-}
-
-async function checkEmail(inputEmail) {
-  if (await userRepository.findOneBy({ email: inputEmail })) {
-    throw new Error('This e-mail is alredy in use');
-  }
-}
-
-function passwordHashing(password) {
-  return crypto.createHash('sha256').update(password).digest('base64');
-}
