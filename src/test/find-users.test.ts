@@ -1,22 +1,32 @@
 import { expect } from 'chai';
-import { seedUsers, startSeed } from '../seed-users';
+import { seedUsers } from '../seed/seed-users';
 import { userRepository } from '../utils';
-import { axiosCreateUser, axiosGetUserById, axiosGetUsers } from './queries';
-import { DEFAULT_USER_INPUT, getExpectedUserOutput } from './test-constants.utils';
+import { axiosGetUsers } from './queries';
+import { getUsersFromDb } from './test-constants.utils';
 
 describe('Find Users query tests', () => {
-  afterEach(async () => {
+  const userPopulation = 50;
+
+  before(async () => {
+    await seedUsers(userPopulation);
+  });
+
+  after(async () => {
     userRepository.delete({});
   });
 
   it('Should return a list of Users', async () => {
-    await seedUsers(0);
+    const response = await axiosGetUsers(userPopulation);
+    const responseOutput = response.data.data.users;
 
-    const resonse = await axiosGetUsers();
+    const usersFromDb = await getUsersFromDb(userPopulation);
 
-    const test = await userRepository.createQueryBuilder('user').orderBy('user.id').getMany();
+    expect(responseOutput).to.be.deep.eq(usersFromDb);
+  });
 
-    console.log(test);
-    console.log(resonse.data.data.users);
+  it('Should return an Error when querying Users without being logged in', async () => {
+    const response = await axiosGetUsers(undefined, 'bad_token');
+
+    expect(response.data.errors[0]).to.be.deep.eq({ message: 'Authentication Failed', code: 401 });
   });
 });

@@ -1,3 +1,4 @@
+import { userRepository } from '../utils';
 import { LoginInput, LoginOutput, UserInput, User } from '../interfaces';
 
 export const DEFAULT_USER_LOGIN_INPUT: LoginInput = {
@@ -15,6 +16,23 @@ export const getExpectedLoginOutput = (userOutput: User, token: string): LoginOu
     user: userOutput,
     token: token,
   };
+};
+
+export const getUsersFromDb = async (limit?: number) => {
+  const users = [];
+
+  const usersFromDb = await userRepository
+    .createQueryBuilder('user')
+    .orderBy('user.name')
+    .limit(limit || 10)
+    .getMany();
+
+  usersFromDb.forEach((element) => {
+    const { password, ...user } = element;
+    users.push(user as User);
+  });
+
+  return users;
 };
 
 export const DEFAULT_USER_INPUT: UserInput = {

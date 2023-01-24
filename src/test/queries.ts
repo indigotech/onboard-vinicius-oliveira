@@ -37,7 +37,7 @@ export const axiosGetUserById = async (userInputId: number, token?: string) => {
   );
 };
 
-export const axiosGetUsers = async (limit?: number, token?) => {
+export const axiosGetUsers = async (limit?: number, token?: string) => {
   return await axios.post(
     TEST_URL,
     { query: FIND_USERS_QUERY, variables: { limit: limit } },

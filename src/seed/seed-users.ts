@@ -1,10 +1,6 @@
-import * as dotenv from 'dotenv';
 import { faker } from '@faker-js/faker';
-import { setupDBConnection } from './data-source';
-import { User } from './User';
-import { passwordHashing, userRepository } from './utils';
-
-dotenv.config();
+import { User } from '../User';
+import { passwordHashing, userRepository } from '../utils';
 
 function randomUser(): User {
   const user = new User();
@@ -30,14 +26,3 @@ export async function seedUsers(userPopulation: number) {
 
   await userRepository.save(users);
 }
-
-export async function startSeed() {
-  console.log('\nDatabase Setup Initializing...');
-  await setupDBConnection().catch((err) => {
-    console.log(err);
-  });
-
-  await seedUsers(50);
-}
-
-startSeed();

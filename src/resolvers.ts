@@ -9,7 +9,7 @@ export const resolvers = {
       return 'Hello World';
     },
     user: async (_, { id }, context) => {
-      await checkToken(context);
+      checkToken(context);
 
       const foundUser = await userRepository.findOneBy({ id: id });
 
@@ -20,7 +20,7 @@ export const resolvers = {
       return foundUser;
     },
     users: async (_, { limit }, context) => {
-      await checkToken(context);
+      checkToken(context);
 
       return await userRepository
         .createQueryBuilder('user')
@@ -31,7 +31,7 @@ export const resolvers = {
   },
   Mutation: {
     async createUser(_, { data }, context) {
-      await checkToken(context);
+      checkToken(context);
 
       const user = new User();
       const hashedPassword = passwordHashing(data.password);
