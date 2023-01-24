@@ -20,22 +20,22 @@ function randomUser(): User {
   return user;
 }
 
-async function populateDb(userPopulation: number) {
-  const userArray = [];
+async function seedUsers(userPopulation: number) {
+  const users = [];
   for (let index = 0; index < userPopulation; index++) {
     const newUser = randomUser();
 
-    userArray.push(newUser);
+    users.push(newUser);
   }
 
-  await userRepository.save(userArray);
+  await userRepository.save(users);
 }
 
 export async function startSeed() {
   console.log('\nDatabase Setup Initializing...');
   await setupDBConnection();
 
-  await populateDb(50);
+  await seedUsers(50);
 }
 
 startSeed();
