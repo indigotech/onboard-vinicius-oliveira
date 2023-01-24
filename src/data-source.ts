@@ -15,7 +15,7 @@ export const setupDBConnection = async () => {
   console.info('Hello from Postgres!');
 };
 
-export const dropDB = async () => {
-  await AppDataSource.dropDatabase();
+export const cleanDB = async () => {
+  await AppDataSource.query('TRUNCATE TABLE "user" CASCADE;');
   console.info(`Database Dropped!`);
 };

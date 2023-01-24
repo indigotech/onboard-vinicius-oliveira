@@ -32,8 +32,12 @@ async function seedUsers(userPopulation: number) {
 }
 
 export async function startSeed() {
+  console.log(process.env.DB_URL);
+
   console.log('\nDatabase Setup Initializing...');
-  await setupDBConnection();
+  await setupDBConnection().catch((err) => {
+    console.log(err);
+  });
 
   await seedUsers(50);
 }
