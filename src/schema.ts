@@ -23,6 +23,14 @@ input UserInput {
     birthDate: String
 }
 
+type UsersPagination {
+    users: [UserOutput]
+    location: String!
+    total: Int!
+    after: Int!
+    before: Int!
+}
+
 type UserOutput {
     id: Int!
     name: String!

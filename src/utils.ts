@@ -46,3 +46,7 @@ export function checkToken(context) {
     throw new CustomError('Authentication Failed', 401);
   }
 }
+
+export const getTotalUsersDb = () => {
+  return AppDataSource.manager.count(User);
+};
