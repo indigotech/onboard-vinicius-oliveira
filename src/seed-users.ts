@@ -20,7 +20,7 @@ function randomUser(): User {
   return user;
 }
 
-async function seedUsers(userPopulation: number) {
+export async function seedUsers(userPopulation: number) {
   const users = [];
   for (let index = 0; index < userPopulation; index++) {
     const newUser = randomUser();
@@ -32,8 +32,6 @@ async function seedUsers(userPopulation: number) {
 }
 
 export async function startSeed() {
-  console.log(process.env.DB_URL);
-
   console.log('\nDatabase Setup Initializing...');
   await setupDBConnection().catch((err) => {
     console.log(err);

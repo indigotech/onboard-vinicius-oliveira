@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { insertUsersIntoDb, startSeed } from '../seed-users';
+import { seedUsers, startSeed } from '../seed-users';
 import { userRepository } from '../utils';
 import { axiosCreateUser, axiosGetUserById, axiosGetUsers } from './queries';
 import { DEFAULT_USER_INPUT, getExpectedUserOutput } from './test-constants.utils';
@@ -10,7 +10,7 @@ describe('Find Users query tests', () => {
   });
 
   it('Should return a list of Users', async () => {
-    await insertUsersIntoDb(0);
+    await seedUsers(0);
 
     const resonse = await axiosGetUsers();
 
