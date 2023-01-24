@@ -1,8 +1,10 @@
 import * as dotenv from 'dotenv';
 import { faker } from '@faker-js/faker';
-import { dropDB, setupDBConnection } from './data-source';
+import { setupDBConnection } from './data-source';
 import { User } from './User';
 import { passwordHashing, userRepository } from './utils';
+
+dotenv.config();
 
 function randomUser(): User {
   const user = new User();
@@ -19,11 +21,14 @@ function randomUser(): User {
 }
 
 async function populateDb(userPopulation: number) {
+  const userArray = [];
   for (let index = 0; index < userPopulation; index++) {
     const newUser = randomUser();
 
-    await userRepository.save(newUser);
+    userArray.push(newUser);
   }
+
+  await userRepository.save(userArray);
 }
 
 export async function startSeed() {
@@ -32,3 +37,5 @@ export async function startSeed() {
 
   await populateDb(50);
 }
+
+startSeed();
