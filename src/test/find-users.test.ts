@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { seedUsers } from '../seed/seed-users';
 import { userRepository } from '../utils';
-import { axiosGetUsers } from './queries';
+import { getUsers } from './queries';
 import { getUsersFromDb } from './test-constants.utils';
 
 describe('Find Users query tests', () => {
@@ -16,7 +16,7 @@ describe('Find Users query tests', () => {
   });
 
   it('Should return a list of Users', async () => {
-    const response = await axiosGetUsers(userPopulation);
+    const response = await getUsers(userPopulation);
     const responseOutput = response.data.data.users;
 
     const usersFromDb = await getUsersFromDb();
@@ -25,7 +25,7 @@ describe('Find Users query tests', () => {
   });
 
   it('Should return an Error when querying Users without being logged in', async () => {
-    const response = await axiosGetUsers(undefined, 'bad_token');
+    const response = await getUsers(undefined, 'bad_token');
 
     expect(response.data.errors[0]).to.be.deep.eq({ message: 'Authentication Failed', code: 401 });
   });

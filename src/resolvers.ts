@@ -22,10 +22,10 @@ export const resolvers = {
     users: async (_, { limit }, context) => {
       checkToken(context);
 
-      return await userRepository
+      return userRepository
         .createQueryBuilder('user')
         .orderBy('user.name')
-        .limit(limit || 10)
+        .limit(limit ?? 10)
         .getMany();
     },
   },

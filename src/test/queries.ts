@@ -10,7 +10,7 @@ import {
 } from './test-constants.utils';
 import { generateToken } from '../utils';
 
-export const axiosCreateUser = async (userInput: UserInput, token?: string) => {
+export const createUser = async (userInput: UserInput, token?: string) => {
   return await axios.post(
     TEST_URL,
     { query: CREATE_USER_MUTATION, variables: { data: userInput } },
@@ -20,14 +20,14 @@ export const axiosCreateUser = async (userInput: UserInput, token?: string) => {
   );
 };
 
-export const axiosLoginUser = async (loginInput: LoginInput) => {
+export const loginUser = async (loginInput: LoginInput) => {
   return await axios.post(TEST_URL, {
     query: LOGIN_MUTATION,
     variables: { data: loginInput },
   });
 };
 
-export const axiosGetUserById = async (userInputId: number, token?: string) => {
+export const getUserById = async (userInputId: number, token?: string) => {
   return await axios.post(
     TEST_URL,
     { query: FIND_USER_BY_ID_QUERY, variables: { userId: userInputId } },
@@ -37,7 +37,7 @@ export const axiosGetUserById = async (userInputId: number, token?: string) => {
   );
 };
 
-export const axiosGetUsers = async (limit?: number, token?: string) => {
+export const getUsers = async (limit?: number, token?: string) => {
   return await axios.post(
     TEST_URL,
     { query: FIND_USERS_QUERY, variables: { limit: limit } },
