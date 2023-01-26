@@ -9,13 +9,12 @@ export const AppDataSource = new DataSource({
   entities: [User],
 });
 
-// Database Connection and start Server Setup
 export const setupDBConnection = async () => {
   await AppDataSource.setOptions({ url: process.env.DB_URL }).initialize();
   console.info('Hello from Postgres!');
 };
 
-export const dropDB = async () => {
-  await AppDataSource.dropDatabase();
-  console.info(`Database Dropped!`);
+export const cleanDB = async () => {
+  await AppDataSource.query('TRUNCATE TABLE "user" CASCADE;');
+  console.info(`Database Cleaned!`);
 };

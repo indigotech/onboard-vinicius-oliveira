@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { DEFAULT_USER_INPUT, getExpectedUserOutput } from './test-constants.utils';
-import { axiosCreateUser } from './queries';
+import { createUser } from './queries';
 import { passwordHashing, userRepository } from '../utils';
 
 describe('Create User Mutation', () => {
@@ -9,7 +9,7 @@ describe('Create User Mutation', () => {
   });
 
   it('Should create a new User', async () => {
-    const response = await axiosCreateUser(DEFAULT_USER_INPUT);
+    const response = await createUser(DEFAULT_USER_INPUT);
 
     const responseOutput = response.data.data.createUser;
 
@@ -23,8 +23,8 @@ describe('Create User Mutation', () => {
   });
 
   it('Should return an error when trying to Sign Up with duplicate e-mail', async () => {
-    await axiosCreateUser(DEFAULT_USER_INPUT);
-    const response = await axiosCreateUser(DEFAULT_USER_INPUT);
+    await createUser(DEFAULT_USER_INPUT);
+    const response = await createUser(DEFAULT_USER_INPUT);
 
     expect(response.data.errors[0]).to.be.deep.eq({ message: 'This e-mail is alredy in use', code: 401 });
   });
@@ -34,7 +34,7 @@ describe('Create User Mutation', () => {
 
     BAD_USER_INPUT.password = 'short1';
 
-    const response = await axiosCreateUser(BAD_USER_INPUT);
+    const response = await createUser(BAD_USER_INPUT);
 
     expect(response.data.errors[0]).to.be.deep.eq({
       message: 'Password must contain more than 6 characters',
@@ -47,7 +47,7 @@ describe('Create User Mutation', () => {
 
     BAD_USER_INPUT.password = 'password';
 
-    const response = await axiosCreateUser(BAD_USER_INPUT);
+    const response = await createUser(BAD_USER_INPUT);
 
     expect(response.data.errors[0]).to.be.deep.eq({
       message: 'Password must contain at Least 1 Number and 1 Letter',
@@ -60,7 +60,7 @@ describe('Create User Mutation', () => {
 
     BAD_USER_INPUT.password = '1234567';
 
-    const response = await axiosCreateUser(BAD_USER_INPUT);
+    const response = await createUser(BAD_USER_INPUT);
 
     expect(response.data.errors[0]).to.be.deep.eq({
       message: 'Password must contain at Least 1 Number and 1 Letter',
@@ -69,7 +69,7 @@ describe('Create User Mutation', () => {
   });
 
   it('Should return an error when trying to Sign Up a new User without being Logged In', async () => {
-    const response = await axiosCreateUser(DEFAULT_USER_INPUT, 'bad_token');
+    const response = await createUser(DEFAULT_USER_INPUT, 'bad_token');
 
     expect(response.data.errors[0]).to.be.deep.eq({ message: 'Authentication Failed', code: 401 });
   });

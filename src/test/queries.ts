@@ -1,10 +1,16 @@
 import axios from 'axios';
 
 import { LoginInput, UserInput } from '../interfaces';
-import { CREATE_USER_MUTATION, FIND_USER_BY_ID_QUERY, LOGIN_MUTATION, TEST_URL } from './test-constants.utils';
+import {
+  CREATE_USER_MUTATION,
+  FIND_USERS_QUERY,
+  FIND_USER_BY_ID_QUERY,
+  LOGIN_MUTATION,
+  TEST_URL,
+} from './test-constants.utils';
 import { generateToken } from '../utils';
 
-export const axiosCreateUser = async (userInput: UserInput, token?) => {
+export const createUser = async (userInput: UserInput, token?: string) => {
   return await axios.post(
     TEST_URL,
     { query: CREATE_USER_MUTATION, variables: { data: userInput } },
@@ -14,17 +20,27 @@ export const axiosCreateUser = async (userInput: UserInput, token?) => {
   );
 };
 
-export const axiosLoginUser = async (loginInput: LoginInput) => {
+export const loginUser = async (loginInput: LoginInput) => {
   return await axios.post(TEST_URL, {
     query: LOGIN_MUTATION,
     variables: { data: loginInput },
   });
 };
 
-export const axiosGetUserById = async (userInputId: number, token?) => {
+export const getUserById = async (userInputId: number, token?: string) => {
   return await axios.post(
     TEST_URL,
     { query: FIND_USER_BY_ID_QUERY, variables: { userId: userInputId } },
+    {
+      headers: { Authorization: token || generateToken(1, false) },
+    },
+  );
+};
+
+export const getUsers = async (limit?: number, token?: string) => {
+  return await axios.post(
+    TEST_URL,
+    { query: FIND_USERS_QUERY, variables: { limit: limit } },
     {
       headers: { Authorization: token || generateToken(1, false) },
     },

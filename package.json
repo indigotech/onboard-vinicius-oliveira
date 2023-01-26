@@ -2,7 +2,7 @@
   "name": "onboard-vinicius-oliveira",
   "version": "1.0.0",
   "scripts": {
-    "seed": "ts-node ./src/seed-users.ts",
+    "seed": "ts-node ./src/seed/start-seed.ts",
     "reinstall": "rm -rf node_modules build && npm install",
     "build": "tsc",
     "dev": "nodemon ./src/index.ts",

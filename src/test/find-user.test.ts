@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { userRepository } from '../utils';
-import { axiosCreateUser, axiosGetUserById } from './queries';
+import { createUser, getUserById } from './queries';
 import { DEFAULT_USER_INPUT, getExpectedUserOutput } from './test-constants.utils';
 
 describe('Find User query tests', () => {
@@ -9,11 +9,11 @@ describe('Find User query tests', () => {
   });
 
   it('Should return User', async () => {
-    await axiosCreateUser(DEFAULT_USER_INPUT);
+    await createUser(DEFAULT_USER_INPUT);
 
     const userFromDb = await userRepository.findOneBy({ email: DEFAULT_USER_INPUT.email });
 
-    const response = await axiosGetUserById(userFromDb.id);
+    const response = await getUserById(userFromDb.id);
 
     const responseOutput = response.data.data.user;
 
@@ -21,13 +21,13 @@ describe('Find User query tests', () => {
   });
 
   it('Should return an Error when querying an user with Non-Existing Id', async () => {
-    const response = await axiosGetUserById(-1);
+    const response = await getUserById(-1);
 
     expect(response.data.errors[0]).to.be.deep.eq({ message: 'User not present in the database', code: 404 });
   });
 
   it('Should return an Error when querying an user with bad Token', async () => {
-    const response = await axiosGetUserById(1, 'bad-token');
+    const response = await getUserById(1, 'bad-token');
 
     expect(response.data.errors[0]).to.be.deep.eq({ message: 'Authentication Failed', code: 401 });
   });
