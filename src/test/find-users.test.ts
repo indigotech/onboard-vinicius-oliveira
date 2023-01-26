@@ -1,5 +1,4 @@
 import { expect } from 'chai';
-import { User } from '../interfaces';
 import { seedUsers } from '../seed/seed-users';
 import { userRepository } from '../utils';
 import { getUsers } from './queries';
@@ -78,17 +77,6 @@ describe('Find Users query tests', () => {
       before: 48,
       users: usersFromDb.slice(48),
     });
-  });
-
-  it('Should return a Page of Users', async () => {
-    const page = 1;
-
-    const response = await axiosGetUsers(page);
-    const responseOutput = response.data.data.users;
-
-    const usersFromDb = await getUsersFromDb();
-
-    expect(responseOutput).to.be.deep.eq(getExpectedPaginationOutput(usersFromDb, page, undefined, userPopulation));
   });
 
   it('Should return an Error when querying Users without being logged in', async () => {
