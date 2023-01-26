@@ -28,5 +28,5 @@ export class Address {
   state: string;
 
   @ManyToOne(() => User, (user) => user.address)
-  userId: User;
+  user: User;
 }

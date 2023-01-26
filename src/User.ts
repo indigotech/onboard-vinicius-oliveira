@@ -18,6 +18,6 @@ export class User {
   @Column()
   birthDate: string;
 
-  @OneToMany(() => Address, (address) => address.userId)
+  @OneToMany(() => Address, (address) => address.user)
   address: Address[];
 }
