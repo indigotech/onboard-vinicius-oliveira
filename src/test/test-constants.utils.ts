@@ -18,31 +18,6 @@ export const getExpectedLoginOutput = (userOutput: User, token: string): LoginOu
   };
 };
 
-export const getExpectedPaginationOutput = (
-  users: [User],
-  page: number,
-  usersByPage: number,
-  totalUsers: number,
-): UsersPagination => {
-  if (!usersByPage) {
-    usersByPage = 10;
-  }
-
-  const before = usersByPage * (page - 1);
-  const after = totalUsers - (before + usersByPage);
-  const pageNum = Math.ceil(totalUsers / usersByPage);
-
-  const pageScope = before + usersByPage;
-
-  return {
-    location: `Page ${page} of ${pageNum}`,
-    total: totalUsers,
-    after: after,
-    before: before,
-    users: users.slice(before, pageScope) as [User],
-  };
-};
-
 export const getUsersFromDb = async () => {
   const usersFromDb = await userRepository.createQueryBuilder('user').orderBy('user.name').getMany();
 
@@ -102,7 +77,6 @@ query User($userId: Int) {
 export const FIND_USERS_QUERY = `
 query Users($usersByPage: Int, $page: Int) {
   users(usersByPage: $usersByPage, page: $page) {
-    location
     total
     after
     before

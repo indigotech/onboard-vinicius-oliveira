@@ -30,37 +30,39 @@ export const resolvers = {
     users: async (_, { usersByPage, page }, context) => {
       checkToken(context);
 
+      usersByPage = usersByPage ? usersByPage : 10;
+
       if (page <= 0 || !page) {
         throw new CustomError('Page number must be an Integer greater than 0', 401);
-      }
-
-      if (!usersByPage) {
-        usersByPage = 10;
       }
 
       const totalUsers = await getTotalUsersDb();
 
       const pageNum = Math.ceil(totalUsers / usersByPage);
-      const tagetPage = usersByPage * (page - 1);
+      const before = usersByPage * (page - 1);
 
-      const after = totalUsers - (tagetPage + usersByPage);
+      const after = totalUsers - (before + usersByPage);
 
       if (page > pageNum) {
-        throw new CustomError('Page number exceeded', 401);
+        return {
+          total: totalUsers,
+          after: 0,
+          before: totalUsers,
+          users: [],
+        };
       }
 
       const users = await userRepository
         .createQueryBuilder('user')
         .orderBy('user.name')
-        .skip(tagetPage)
+        .skip(before)
         .take(usersByPage)
         .getMany();
 
       return {
-        location: `Page ${page} of ${pageNum}`,
         total: totalUsers,
-        after: after,
-        before: tagetPage,
+        after: after < 0 ? 0 : after,
+        before: before,
         users: users,
       };
     },

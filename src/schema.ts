@@ -24,7 +24,6 @@ input UserInput {
 }
 
 type UsersPagination {
-    location: String!
     total: Int!
     after: Int!
     before: Int!
