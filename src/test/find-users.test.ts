@@ -21,9 +21,7 @@ describe('Find Users query tests', () => {
 
     const usersFromDb = await getUsersFromDb();
 
-    console.log(usersFromDb);
-
-    //expect(responseOutput).to.be.deep.eq(usersFromDb);
+    expect(responseOutput).to.be.deep.eq(usersFromDb);
   });
 
   it('Should return an Error when querying Users without being logged in', async () => {
