@@ -51,7 +51,7 @@ export const getUsersFromDb = async () => {
     return user;
   });
 
-  return users as [UserOutput];
+  return users;
 };
 
 export const DEFAULT_USER_INPUT: UserInput = {
@@ -64,8 +64,8 @@ export const DEFAULT_USER_INPUT: UserInput = {
 export const TEST_URL = 'http://localhost:3001/';
 
 export const CREATE_USER_MUTATION = `
-mutation CreateUser($data: UserInput) {
-  createUser(data: $data) {
+mutation CreateUser($input: UserInput) {
+  createUser(input: $input) {
     id
     name
     email
@@ -75,12 +75,12 @@ mutation CreateUser($data: UserInput) {
 `;
 
 export const LOGIN_MUTATION = `
-mutation Mutation($data: LoginInput) {
-  login(data: $data) {
+mutation Login($input: LoginInput) {
+  login(input: $input) {
     user {
       id
-      email
       name
+      email
       birthDate
     }
     token

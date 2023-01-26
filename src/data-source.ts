@@ -1,7 +1,7 @@
-import { Address } from './Address';
+import { Address } from './entities/Address';
+import { User } from './entities/User';
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
-import { User } from './User';
 
 export const AppDataSource = new DataSource({
   type: 'postgres',

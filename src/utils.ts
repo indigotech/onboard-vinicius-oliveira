@@ -1,11 +1,13 @@
-import { User } from './User';
+import { User } from './entities/User';
 import { AppDataSource } from './data-source';
 import crypto from 'crypto';
 import { CustomError } from './test/format-error';
 import jwt from 'jsonwebtoken';
 import { JWTpayload } from './interfaces';
+import { Address } from './entities/Address';
 
 export const userRepository = AppDataSource.getRepository(User);
+export const addressRepository = AppDataSource.getRepository(Address);
 
 export function checkPassword(password: string) {
   if (password.length < 7) {

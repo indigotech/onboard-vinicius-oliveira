@@ -13,7 +13,7 @@ import { generateToken } from '../utils';
 export const createUser = async (userInput: UserInput, token?: string) => {
   return await axios.post(
     TEST_URL,
-    { query: CREATE_USER_MUTATION, variables: { data: userInput } },
+    { query: CREATE_USER_MUTATION, variables: { input: userInput } },
     {
       headers: { Authorization: token || generateToken(1, false) },
     },
@@ -23,7 +23,7 @@ export const createUser = async (userInput: UserInput, token?: string) => {
 export const loginUser = async (loginInput: LoginInput) => {
   return await axios.post(TEST_URL, {
     query: LOGIN_MUTATION,
-    variables: { data: loginInput },
+    variables: { input: loginInput },
   });
 };
 
