@@ -18,18 +18,12 @@ export const getExpectedLoginOutput = (userOutput: User, token: string): LoginOu
   };
 };
 
-export const getUsersFromDb = async (limit?: number) => {
-  const users = [];
+export const getUsersFromDb = async () => {
+  const usersFromDb = await userRepository.createQueryBuilder('user').orderBy('user.name').getMany();
 
-  const usersFromDb = await userRepository
-    .createQueryBuilder('user')
-    .orderBy('user.name')
-    .limit(limit || 10)
-    .getMany();
-
-  usersFromDb.forEach((element) => {
+  const users = usersFromDb.map((element) => {
     const { password, ...user } = element;
-    users.push(user as User);
+    return user;
   });
 
   return users;
