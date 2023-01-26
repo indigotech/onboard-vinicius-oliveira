@@ -23,6 +23,14 @@ export interface LoginOutput {
   token: string;
 }
 
+export interface UsersPagination {
+  location: string;
+  total: number;
+  after: number;
+  before: number;
+  users: [User];
+}
+
 export interface JWTpayload {
   userId: number;
   iat: number;

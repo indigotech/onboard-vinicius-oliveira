@@ -10,7 +10,6 @@ import {
   passwordHashing,
   userRepository,
 } from './utils';
-import { UsersPagination } from 'interfaces';
 
 export const resolvers = {
   Query: {
@@ -31,6 +30,10 @@ export const resolvers = {
     users: async (_, { usersByPage, page }, context) => {
       checkToken(context);
 
+      if (page <= 0 || !page) {
+        throw new CustomError('Page number must be an Integer greater than 0', 401);
+      }
+
       if (!usersByPage) {
         usersByPage = 10;
       }
@@ -41,10 +44,6 @@ export const resolvers = {
       const tagetPage = usersByPage * (page - 1);
 
       const after = totalUsers - (tagetPage + usersByPage);
-
-      if (page <= 0) {
-        throw new CustomError('Page number must be greater than 0', 401);
-      }
 
       if (page > pageNum) {
         throw new CustomError('Page number exceeded', 401);
