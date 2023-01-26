@@ -10,6 +10,7 @@ import {
   passwordHashing,
   userRepository,
 } from './utils';
+import { UsersPagination } from 'interfaces';
 
 export const resolvers = {
   Query: {
@@ -27,15 +28,19 @@ export const resolvers = {
 
       return foundUser;
     },
-    users: async (_, { limit, page }, context) => {
+    users: async (_, { usersByPage, page }, context) => {
       checkToken(context);
 
+      if (!usersByPage) {
+        usersByPage = 10;
+      }
+
       const totalUsers = await getTotalUsersDb();
-      const pageNum = Math.ceil(totalUsers / limit);
 
-      const tagetPage = limit * (page - 1);
+      const pageNum = Math.ceil(totalUsers / usersByPage);
+      const tagetPage = usersByPage * (page - 1);
 
-      const after = totalUsers - (tagetPage + limit);
+      const after = totalUsers - (tagetPage + usersByPage);
 
       if (page <= 0) {
         throw new CustomError('Page number must be greater than 0', 401);
@@ -48,7 +53,8 @@ export const resolvers = {
       const users = await userRepository
         .createQueryBuilder('user')
         .orderBy('user.name')
-        .limit(limit ?? 10)
+        .skip(tagetPage)
+        .take(usersByPage)
         .getMany();
 
       return {
