@@ -8,7 +8,7 @@ export interface UserInput extends UserCommonFields {
   password: string;
 }
 
-export interface User extends UserCommonFields {
+export interface UserOutput extends UserCommonFields {
   id: number;
 }
 
@@ -19,16 +19,15 @@ export interface LoginInput {
 }
 
 export interface LoginOutput {
-  user: User;
+  user: UserOutput;
   token: string;
 }
 
 export interface UsersPagination {
-  location: string;
   total: number;
   after: number;
   before: number;
-  users: [User];
+  users: UserOutput[];
 }
 
 export interface JWTpayload {

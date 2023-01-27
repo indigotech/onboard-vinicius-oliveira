@@ -10,6 +10,7 @@ import {
   passwordHashing,
   userRepository,
 } from './utils';
+import { LoginOutput, UserOutput, UsersPagination } from './interfaces';
 
 export const resolvers = {
   Query: {
@@ -27,13 +28,13 @@ export const resolvers = {
 
       return foundUser;
     },
-    users: async (_, { usersByPage, page }, context) => {
+    users: async (_, { usersByPage, page }, context): Promise<UsersPagination> => {
       checkToken(context);
 
       usersByPage = usersByPage ? usersByPage : 10;
 
       if (page <= 0 || !page) {
-        throw new CustomError('Page number must be an Integer greater than 0', 401);
+        throw new CustomError('Page number must be an Integer greater than 0', 400);
       }
 
       const totalUsers = await getTotalUsersDb();
@@ -68,7 +69,7 @@ export const resolvers = {
     },
   },
   Mutation: {
-    async createUser(_, { data }, context) {
+    async createUser(_, { data }, context): Promise<UserOutput> {
       checkToken(context);
 
       const user = new User();
@@ -85,7 +86,7 @@ export const resolvers = {
       await AppDataSource.manager.save(user);
       return user;
     },
-    async login(_, { data }) {
+    async login(_, { data }): Promise<LoginOutput> {
       const user = await userRepository.findOneBy({
         email: data.email,
         password: passwordHashing(data.password),

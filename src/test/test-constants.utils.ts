@@ -1,5 +1,5 @@
 import { userRepository } from '../utils';
-import { LoginInput, LoginOutput, UserInput, User, UsersPagination } from '../interfaces';
+import { LoginInput, LoginOutput, UserInput, UserOutput, UsersPagination } from '../interfaces';
 
 export const DEFAULT_USER_LOGIN_INPUT: LoginInput = {
   email: 'bluepen@test.com',
@@ -7,11 +7,11 @@ export const DEFAULT_USER_LOGIN_INPUT: LoginInput = {
   rememberMe: true,
 };
 
-export const getExpectedUserOutput = (userOutput: User) => {
+export const getExpectedUserOutput = (userOutput: UserOutput) => {
   return { id: userOutput.id, name: userOutput.name, email: userOutput.email, birthDate: userOutput.birthDate };
 };
 
-export const getExpectedLoginOutput = (userOutput: User, token: string): LoginOutput => {
+export const getExpectedLoginOutput = (userOutput: UserOutput, token: string): LoginOutput => {
   return {
     user: userOutput,
     token: token,
@@ -26,7 +26,7 @@ export const getUsersFromDb = async () => {
     return user;
   });
 
-  return users as [User];
+  return users as [UserOutput];
 };
 
 export const DEFAULT_USER_INPUT: UserInput = {

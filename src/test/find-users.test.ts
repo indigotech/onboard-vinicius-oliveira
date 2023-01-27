@@ -21,13 +21,6 @@ describe('Find Users query tests', () => {
 
     const usersFromDb = await getUsersFromDb();
 
-    for (let i = 0; i < userPopulation; i++) {
-      expect(responseOutput.users[i].id).to.be.eq(usersFromDb[i].id);
-      expect(responseOutput.users[i].name).to.be.eq(usersFromDb[i].name);
-      expect(responseOutput.users[i].email).to.be.eq(usersFromDb[i].email);
-      expect(responseOutput.users[i].birthDate).to.be.eq(usersFromDb[i].birthDate);
-    }
-
     expect(responseOutput).to.be.deep.eq({
       total: userPopulation,
       after: 0,
@@ -99,7 +92,7 @@ describe('Find Users query tests', () => {
 
     expect(response.data.errors[0]).to.be.deep.eq({
       message: 'Page number must be an Integer greater than 0',
-      code: 401,
+      code: 400,
     });
   });
 });
