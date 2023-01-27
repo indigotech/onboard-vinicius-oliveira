@@ -1,3 +1,5 @@
+import { Address } from './entities/Address';
+
 interface UserCommonFields {
   name: string;
   email: string;
@@ -28,6 +30,7 @@ export interface UserInput extends UserCommonFields {
 
 export interface UserOutput extends UserCommonFields {
   id: number;
+  address: Address[];
 }
 
 export interface LoginInput {

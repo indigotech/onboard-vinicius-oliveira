@@ -22,7 +22,10 @@ export const resolvers = {
     user: async (_, { id }, context) => {
       checkToken(context);
 
-      const foundUser = await userRepository.findOneBy({ id: id });
+      const foundUser = await userRepository.findOne({
+        where: { id },
+        relations: { address: true },
+      });
 
       if (!foundUser) {
         throw new CustomError('User not found in the database', 404);
@@ -57,6 +60,7 @@ export const resolvers = {
 
       const users = await userRepository
         .createQueryBuilder('user')
+        .leftJoinAndSelect('user.address', 'address')
         .orderBy('user.name')
         .skip(before)
         .take(usersByPage)
