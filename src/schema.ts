@@ -5,7 +5,7 @@ export const typeDefs = buildSchema(`
 type Query {
     hello: String
     user (id: Int): UserOutput!
-    users (limit: Int = 10): [UserOutput]
+    users (usersByPage: Int = 10, page: Int): UsersPagination
 }
 
 type User {
@@ -21,6 +21,13 @@ input UserInput {
     email: String!
     password: String!
     birthDate: String
+}
+
+type UsersPagination {
+    total: Int!
+    after: Int!
+    before: Int!
+    users: [UserOutput]
 }
 
 type UserOutput {
