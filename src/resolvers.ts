@@ -25,7 +25,7 @@ export const resolvers = {
       const foundUser = await userRepository.findOneBy({ id: id });
 
       if (!foundUser) {
-        throw new CustomError('User not present in the database', 404);
+        throw new CustomError('User not found in the database', 404);
       }
 
       return foundUser;
@@ -130,7 +130,7 @@ export const resolvers = {
       address.user = user;
 
       if (await userRepository.findOneBy({ address: address })) {
-        throw new CustomError('This User is Alredy Registered in this Address', 404);
+        throw new CustomError('This User is Alredy Registered in this Address', 400);
       }
 
       await addressRepository.save(address);

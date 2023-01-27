@@ -9,7 +9,7 @@ type Query {
 }
 
 type User {
-    id: ID!
+    id: Int!
     name: String!
     email: String!
     password: String!
@@ -50,7 +50,7 @@ type LoginOutput {
 }
 
 type Address {
-    id: ID!
+    id: Int!
     cep: String!
     street: String!
     streetNum: Int!

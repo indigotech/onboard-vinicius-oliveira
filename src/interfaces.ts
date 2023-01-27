@@ -4,6 +4,24 @@ interface UserCommonFields {
   birthDate: string;
 }
 
+export interface AddressCommonFields {
+  street: string;
+  cep: string;
+  streetNum: number;
+  complement: string;
+  neighborhood: string;
+  city: string;
+  state: string;
+}
+
+export interface Address extends AddressCommonFields {
+  id: number;
+}
+
+export interface AddressInput extends AddressCommonFields {
+  userEmail: string;
+}
+
 export interface UserInput extends UserCommonFields {
   password: string;
 }
