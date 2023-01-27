@@ -12,7 +12,7 @@ import {
   passwordHashing,
   userRepository,
 } from './utils';
-import { LoginOutput, UserOutput, UsersPagination } from './interfaces';
+import { AddressOutput, LoginOutput, UserOutput, UsersPagination } from './interfaces';
 
 export const resolvers = {
   Query: {
@@ -105,7 +105,7 @@ export const resolvers = {
         token: token,
       };
     },
-    async createAddress(_, { input: addressInput }, context) {
+    async createAddress(_, { input: addressInput }, context): Promise<AddressOutput> {
       checkToken(context);
 
       const user = await userRepository.findOne({

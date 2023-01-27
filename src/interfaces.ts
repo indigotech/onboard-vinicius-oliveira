@@ -14,7 +14,7 @@ export interface AddressCommonFields {
   state: string;
 }
 
-export interface Address extends AddressCommonFields {
+export interface AddressOutput extends AddressCommonFields {
   id: number;
 }
 
