@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import { DEFAULT_USER_INPUT, DEFAULT_USER_LOGIN_INPUT, getExpectedLoginOutput } from './test-constants.utils';
+import { DEFAULT_USER_INPUT, DEFAULT_USER_LOGIN_INPUT } from './test-constants.utils';
 import { createUser, loginUser } from './queries';
 import { userRepository } from '../utils';
 
@@ -20,7 +20,10 @@ describe('Login Tests', () => {
 
     const { password, ...userFromDB } = await userRepository.findOneBy({ email: responseOutput.user.email });
 
-    expect(responseOutput).to.be.deep.eq(getExpectedLoginOutput(userFromDB, token));
+    expect(responseOutput).to.be.deep.eq({
+      user: userFromDB,
+      token: token,
+    });
   });
 
   it('Should return an Error when Sign In with Unregistered User password', async () => {

@@ -1,19 +1,6 @@
 import { userRepository } from '../utils';
 import { LoginInput, LoginOutput, UserInput, UserOutput, AddressInput } from '../interfaces';
 
-export const DEFAULT_USER_LOGIN_INPUT: LoginInput = {
-  email: 'bluepen@test.com',
-  password: 'test123',
-  rememberMe: true,
-};
-
-export const getExpectedLoginOutput = (userOutput: UserOutput, token: string): LoginOutput => {
-  return {
-    user: userOutput,
-    token: token,
-  };
-};
-
 export const getUsersFromDb = async () => {
   const usersFromDb = await userRepository
     .createQueryBuilder('user')
@@ -27,6 +14,12 @@ export const getUsersFromDb = async () => {
   });
 
   return users;
+};
+
+export const DEFAULT_USER_LOGIN_INPUT: LoginInput = {
+  email: 'bluepen@test.com',
+  password: 'test123',
+  rememberMe: true,
 };
 
 export const DEFAULT_ADDRESS_INPUT: AddressInput = {
