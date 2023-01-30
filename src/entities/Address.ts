@@ -16,7 +16,7 @@ export class Address {
   streetNum: number;
 
   @Column({ nullable: true })
-  complement: string;
+  complement?: string;
 
   @Column()
   neighborhood: string;

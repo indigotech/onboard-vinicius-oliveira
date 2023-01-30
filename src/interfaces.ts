@@ -8,7 +8,7 @@ export interface AddressCommonFields {
   street: string;
   cep: string;
   streetNum: number;
-  complement: string;
+  complement?: string;
   neighborhood: string;
   city: string;
   state: string;
