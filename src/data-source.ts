@@ -1,12 +1,13 @@
+import { Address } from './entities/Address';
+import { User } from './entities/User';
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
-import { User } from './User';
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
   synchronize: true,
   logging: false,
-  entities: [User],
+  entities: [User, Address],
 });
 
 export const setupDBConnection = async () => {

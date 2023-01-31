@@ -1,7 +1,9 @@
-import { User } from './User';
+import { User } from './entities/User';
+import { Address } from './entities/Address';
 import { AppDataSource } from './data-source';
 import { CustomError } from './test/format-error';
 import {
+  addressRepository,
   checkEmail,
   checkPassword,
   checkToken,
@@ -10,7 +12,7 @@ import {
   passwordHashing,
   userRepository,
 } from './utils';
-import { LoginOutput, UserOutput, UsersPagination } from './interfaces';
+import { AddressOutput, LoginOutput, UserOutput, UsersPagination } from './interfaces';
 
 export const resolvers = {
   Query: {
@@ -23,7 +25,7 @@ export const resolvers = {
       const foundUser = await userRepository.findOneBy({ id: id });
 
       if (!foundUser) {
-        throw new CustomError('User not present in the database', 404);
+        throw new CustomError('User not found in the database', 404);
       }
 
       return foundUser;
@@ -69,39 +71,71 @@ export const resolvers = {
     },
   },
   Mutation: {
-    async createUser(_, { data }, context): Promise<UserOutput> {
+    async createUser(_, { input: userInput }, context): Promise<UserOutput> {
       checkToken(context);
 
       const user = new User();
-      const hashedPassword = passwordHashing(data.password);
+      const hashedPassword = passwordHashing(userInput.password);
 
-      user.name = data.name;
-      user.email = data.email;
+      user.name = userInput.name;
+      user.email = userInput.email;
       user.password = hashedPassword;
-      user.birthDate = data.birthDate;
+      user.birthDate = userInput.birthDate;
 
-      checkPassword(data.password);
-      await checkEmail(data.email);
+      checkPassword(userInput.password);
+      await checkEmail(userInput.email);
 
       await AppDataSource.manager.save(user);
       return user;
     },
-    async login(_, { data }): Promise<LoginOutput> {
+    async login(_, { input: loginInput }): Promise<LoginOutput> {
       const user = await userRepository.findOneBy({
-        email: data.email,
-        password: passwordHashing(data.password),
+        email: loginInput.email,
+        password: passwordHashing(loginInput.password),
       });
 
       if (!user) {
         throw new CustomError('User not found, please create an account, or review credentials', 401);
       }
 
-      const token = generateToken(user.id, data.rememberMe);
+      const token = generateToken(user.id, loginInput.rememberMe);
 
       return {
         user: user,
         token: token,
       };
+    },
+    async createAddress(_, { input: addressInput }, context): Promise<AddressOutput> {
+      checkToken(context);
+
+      const user = await userRepository.findOne({
+        where: { email: addressInput.userEmail },
+        relations: { address: true },
+      });
+
+      if (!user) {
+        throw new CustomError('User not present in the database', 404);
+      }
+
+      const address = new Address();
+
+      address.state = addressInput.state;
+      address.city = addressInput.city;
+      address.neighborhood = addressInput.neighborhood;
+      address.street = addressInput.street;
+      address.streetNum = addressInput.streetNum;
+      address.cep = addressInput.cep;
+      address.complement = addressInput.complement;
+
+      address.user = user;
+
+      if (await userRepository.findOneBy({ address: address })) {
+        throw new CustomError('This User is Alredy Registered in this Address', 400);
+      }
+
+      await addressRepository.save(address);
+
+      return address;
     },
   },
 };

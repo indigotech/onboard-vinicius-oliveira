@@ -18,3 +18,4 @@ require('./create-user.test');
 require('./find-user.test');
 require('./login.test');
 require('./find-users.test');
+require('./create-address.test');

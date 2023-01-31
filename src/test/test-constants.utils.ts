@@ -1,5 +1,5 @@
 import { userRepository } from '../utils';
-import { LoginInput, LoginOutput, UserInput, UserOutput, UsersPagination } from '../interfaces';
+import { LoginInput, LoginOutput, UserInput, UserOutput, AddressInput } from '../interfaces';
 
 export const DEFAULT_USER_LOGIN_INPUT: LoginInput = {
   email: 'bluepen@test.com',
@@ -26,7 +26,18 @@ export const getUsersFromDb = async () => {
     return user;
   });
 
-  return users as [UserOutput];
+  return users;
+};
+
+export const DEFAULT_ADDRESS_INPUT: AddressInput = {
+  street: 'Av. Dr. Arnaldo',
+  cep: '01255-000',
+  streetNum: 2194,
+  complement: null,
+  neighborhood: 'Sumaré',
+  city: 'São Paulo',
+  state: 'SP',
+  userEmail: 'bluepen@test.com',
 };
 
 export const DEFAULT_USER_INPUT: UserInput = {
@@ -39,8 +50,8 @@ export const DEFAULT_USER_INPUT: UserInput = {
 export const TEST_URL = 'http://localhost:3001/';
 
 export const CREATE_USER_MUTATION = `
-mutation CreateUser($data: UserInput) {
-  createUser(data: $data) {
+mutation CreateUser($input: UserInput) {
+  createUser(input: $input) {
     id
     name
     email
@@ -50,12 +61,12 @@ mutation CreateUser($data: UserInput) {
 `;
 
 export const LOGIN_MUTATION = `
-mutation Mutation($data: LoginInput) {
-  login(data: $data) {
+mutation Login($input: LoginInput) {
+  login(input: $input) {
     user {
       id
-      email
       name
+      email
       birthDate
     }
     token
@@ -86,6 +97,21 @@ query Users($usersByPage: Int, $page: Int) {
       email
       birthDate
     }
+  }
+}
+`;
+
+export const CREATE_ADDRESS_MUTATION = `
+mutation CreateAddress($input: AddressInput) {
+  createAddress(input: $input) {
+    id
+    cep
+    street
+    streetNum
+    complement
+    neighborhood
+    city
+    state
   }
 }
 `;

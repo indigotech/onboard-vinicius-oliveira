@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { User } from '../User';
+import { User } from '../entities/User';
 import { passwordHashing, userRepository } from '../utils';
 
 function randomUser(): User {

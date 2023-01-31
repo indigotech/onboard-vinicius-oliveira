@@ -9,11 +9,12 @@ type Query {
 }
 
 type User {
-    id: ID!
+    id: Int!
     name: String!
     email: String!
     password: String!
     birthDate: String
+    addresses: [Address]
 }
 
 input UserInput {
@@ -48,9 +49,32 @@ type LoginOutput {
     token: String!
 }
 
+type Address {
+    id: Int!
+    cep: String!
+    street: String!
+    streetNum: Int!
+    complement: String
+    neighborhood: String!
+    city: String!
+    state: String!
+}
+
+input AddressInput {
+    street: String!
+    cep: String!
+    streetNum: Int!
+    complement: String
+    neighborhood: String!
+    city: String!
+    state: String!
+    userEmail: String!
+}
+
 type Mutation {
-    createUser(data: UserInput): UserOutput!
-    login(data: LoginInput): LoginOutput!
+    createUser(input: UserInput): UserOutput!
+    login(input: LoginInput): LoginOutput!
+    createAddress(input: AddressInput): Address!
 }
 
 `);

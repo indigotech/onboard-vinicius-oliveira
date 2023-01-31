@@ -23,7 +23,7 @@ describe('Find User query tests', () => {
   it('Should return an Error when querying an user with Non-Existing Id', async () => {
     const response = await getUserById(-1);
 
-    expect(response.data.errors[0]).to.be.deep.eq({ message: 'User not present in the database', code: 404 });
+    expect(response.data.errors[0]).to.be.deep.eq({ message: 'User not found in the database', code: 404 });
   });
 
   it('Should return an Error when querying an user with bad Token', async () => {
