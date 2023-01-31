@@ -89,8 +89,7 @@ export const resolvers = {
       checkPassword(userInput.password);
       await checkEmail(userInput.email);
 
-      await AppDataSource.manager.save(user);
-      return user;
+      return userRepository.save(user);
     },
     async login(_, { input: loginInput }): Promise<LoginOutput> {
       const user = await userRepository.findOneBy({
@@ -137,9 +136,7 @@ export const resolvers = {
         throw new CustomError('This User is Alredy Registered in this Address', 400);
       }
 
-      await addressRepository.save(address);
-
-      return address;
+      return addressRepository.save(address);
     },
   },
 };
