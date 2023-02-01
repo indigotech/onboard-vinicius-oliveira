@@ -14,7 +14,7 @@ type User {
     email: String!
     password: String!
     birthDate: String
-    addresses: [Address]
+    address: [Address!]
 }
 
 input UserInput {
@@ -36,6 +36,7 @@ type UserOutput {
     name: String!
     email: String!
     birthDate: String
+    address: [Address!]
 }
 
 input LoginInput {

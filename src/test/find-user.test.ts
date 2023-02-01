@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { userRepository } from '../utils';
 import { createUser, getUserById } from './queries';
-import { DEFAULT_USER_INPUT, getExpectedUserOutput } from './test-constants.utils';
+import { DEFAULT_USER_INPUT } from './test-constants.utils';
 
 describe('Find User query tests', () => {
   afterEach(async () => {
@@ -11,13 +11,18 @@ describe('Find User query tests', () => {
   it('Should return User', async () => {
     await createUser(DEFAULT_USER_INPUT);
 
-    const userFromDb = await userRepository.findOneBy({ email: DEFAULT_USER_INPUT.email });
+    const userFromDb = await userRepository.findOne({
+      where: { email: DEFAULT_USER_INPUT.email },
+      relations: { address: true },
+    });
 
     const response = await getUserById(userFromDb.id);
 
     const responseOutput = response.data.data.user;
 
-    expect(responseOutput).to.be.deep.eq(getExpectedUserOutput(userFromDb));
+    const { password, ...expectedResponse } = userFromDb;
+
+    expect(responseOutput).to.be.deep.eq(expectedResponse);
   });
 
   it('Should return an Error when querying an user with Non-Existing Id', async () => {

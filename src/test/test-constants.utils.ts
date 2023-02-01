@@ -1,25 +1,12 @@
 import { userRepository } from '../utils';
 import { LoginInput, LoginOutput, UserInput, UserOutput, AddressInput } from '../interfaces';
 
-export const DEFAULT_USER_LOGIN_INPUT: LoginInput = {
-  email: 'bluepen@test.com',
-  password: 'test123',
-  rememberMe: true,
-};
-
-export const getExpectedUserOutput = (userOutput: UserOutput) => {
-  return { id: userOutput.id, name: userOutput.name, email: userOutput.email, birthDate: userOutput.birthDate };
-};
-
-export const getExpectedLoginOutput = (userOutput: UserOutput, token: string): LoginOutput => {
-  return {
-    user: userOutput,
-    token: token,
-  };
-};
-
 export const getUsersFromDb = async () => {
-  const usersFromDb = await userRepository.createQueryBuilder('user').orderBy('user.name').getMany();
+  const usersFromDb = await userRepository
+    .createQueryBuilder('user')
+    .leftJoinAndSelect('user.address', 'address')
+    .orderBy('user.name')
+    .getMany();
 
   const users = usersFromDb.map((element) => {
     const { password, ...user } = element;
@@ -27,6 +14,12 @@ export const getUsersFromDb = async () => {
   });
 
   return users;
+};
+
+export const DEFAULT_USER_LOGIN_INPUT: LoginInput = {
+  email: 'bluepen@test.com',
+  password: 'test123',
+  rememberMe: true,
 };
 
 export const DEFAULT_ADDRESS_INPUT: AddressInput = {
@@ -81,6 +74,16 @@ query User($userId: Int) {
     name
     email
     birthDate
+    address {
+      id
+      cep
+      street
+      streetNum
+      complement
+      neighborhood
+      city
+      state
+    }
   }
 }
 `;
@@ -96,6 +99,16 @@ query Users($usersByPage: Int, $page: Int) {
       name
       email
       birthDate
+      address {
+        id
+        streetNum
+        street
+        state
+        neighborhood
+        complement
+        city
+        cep
+      }
     }
   }
 }
